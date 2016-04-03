@@ -2,6 +2,7 @@ package com.musicstream.soa;
 
 import java.util.ArrayList;
 
+import org.springframework.boot.autoconfigure.web.ErrorController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,11 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 import de.voidplus.soundcloud.SoundCloud;
 
 @RestController
-public class SoundcloudController {
+public class SoundcloudController implements ErrorController {
 	private SoundCloud soundcloud = new SoundCloud(
 			"481ca2dc5f8ff18044c77239659a5b59",
 			"1067035a0baee3932e79847bae144fa1", "testing.kamel@gmail.com",
 			"azerty123");
+	private static final String PATH = "/error";
 
 	@RequestMapping("/scusertracks")
 	public SoundcloudModel userTracks() {
@@ -55,5 +57,14 @@ public class SoundcloudController {
 			urlCover.add(soundcloud.getMePlaylists().get(i).getArtworkUrl());
 		}
 		return (new SoundcloudModel(titles, urlCover));
+	}
+	 @RequestMapping(value = PATH)
+	    public String error() {
+	        return "Error handling";
+	    }
+	@Override
+	public String getErrorPath() {
+		// TODO Auto-generated method stub
+		 return PATH;
 	}
 }
