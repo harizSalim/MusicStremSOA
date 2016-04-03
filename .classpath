@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry including="**/*.java" kind="src" path="src/main/java"/>
 	<classpathentry kind="var" path="M2_REPO/javax/validation/validation-api/1.1.0.Final/validation-api-1.1.0.Final.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/Java SE 7 [1.7.0_15]"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0_05"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/boot/spring-boot-starter-web/1.3.3.RELEASE/spring-boot-starter-web-1.3.3.RELEASE.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/boot/spring-boot-starter/1.3.3.RELEASE/spring-boot-starter-1.3.3.RELEASE.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/boot/spring-boot/1.3.3.RELEASE/spring-boot-1.3.3.RELEASE.jar"/>
@@ -35,30 +35,20 @@
 	<classpathentry kind="var" path="M2_REPO/com/fasterxml/jackson/core/jackson-core/2.6.5/jackson-core-2.6.5.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-web/4.2.5.RELEASE/spring-web-4.2.5.RELEASE.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-webmvc/4.2.5.RELEASE/spring-webmvc-4.2.5.RELEASE.jar"/>
-	<classpathentry kind="lib" path="libs/com.google.protobuf-2.4.0.jar"/>
-	<classpathentry kind="lib" path="libs/commons-io-2.4.jar"/>
 	<classpathentry kind="lib" path="libs/commons-lang-2.6.jar"/>
-	<classpathentry kind="lib" path="libs/commons-validator-1.5.0.jar"/>
 	<classpathentry kind="lib" path="libs/DeezerApi.jar"/>
 	<classpathentry kind="lib" path="libs/gson-2.2.2.jar"/>
-	<classpathentry kind="lib" path="libs/guava-18.0.jar"/>
-	<classpathentry kind="lib" path="libs/httpclient-4.5.1.jar"/>
-	<classpathentry kind="lib" path="libs/httpclient-cache-4.5.1.jar"/>
-	<classpathentry kind="lib" path="libs/httpclient-win-4.5.1.jar"/>
 	<classpathentry kind="lib" path="libs/httpcore-4.4.3.jar"/>
 	<classpathentry kind="lib" path="libs/jackson-all-1.6.1.jar"/>
 	<classpathentry kind="lib" path="libs/jl1.0.jar"/>
 	<classpathentry kind="lib" path="libs/json-lib.jar"/>
 	<classpathentry kind="lib" path="libs/json-simple-1.1.1.jar"/>
 	<classpathentry kind="lib" path="libs/junit.jar"/>
-	<classpathentry kind="lib" path="libs/mockito-core-1.8.0.jar"/>
 	<classpathentry kind="lib" path="libs/mp3plugin.jar"/>
-	<classpathentry kind="lib" path="libs/mp3spi.jar"/>
-	<classpathentry kind="lib" path="libs/org-apache-commons-codec.jar"/>
-	<classpathentry kind="lib" path="libs/org.apache.commons.httpclient.jar"/>
-	<classpathentry kind="lib" path="libs/protobuf-java-2.4.1.jar"/>
 	<classpathentry kind="lib" path="libs/soundCloudApi.jar"/>
-	<classpathentry kind="lib" path="libs/tritonus_share.jar"/>
-	<classpathentry kind="lib" path="libs/soundcloud-0.2.1-jar-with-dependencies.jar"/>
+	<classpathentry kind="lib" path="libs/java-json.jar"/>
+	<classpathentry kind="lib" path="libs/httpclient-4.5.1.jar"/>
+	<classpathentry kind="lib" path="libs/mockito-core-1.8.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Malek/workspaceNew/TP3/libs/api-1.3.1-all.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
