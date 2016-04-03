@@ -2,7 +2,7 @@ package com.musicstream.main;
 
 import java.io.IOException;
 
-import hello.HttpConnectionExample;
+import com.musicstream.utils.HttpConnectionExample;
 
 /**
  * @author Malek Main Function

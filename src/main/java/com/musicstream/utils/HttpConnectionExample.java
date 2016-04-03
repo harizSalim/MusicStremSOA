@@ -1,4 +1,4 @@
-package hello;
+package com.musicstream.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;

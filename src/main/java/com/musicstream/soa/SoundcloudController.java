@@ -1,4 +1,4 @@
-package hello;
+package com.musicstream.soa;
 
 import java.util.ArrayList;
 

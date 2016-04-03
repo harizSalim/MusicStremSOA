@@ -57,8 +57,8 @@
 	<classpathentry kind="lib" path="libs/org-apache-commons-codec.jar"/>
 	<classpathentry kind="lib" path="libs/org.apache.commons.httpclient.jar"/>
 	<classpathentry kind="lib" path="libs/protobuf-java-2.4.1.jar"/>
-	<classpathentry kind="lib" path="libs/soundcloud-0.2.1-jar-with-dependencies.jar"/>
 	<classpathentry kind="lib" path="libs/soundCloudApi.jar"/>
 	<classpathentry kind="lib" path="libs/tritonus_share.jar"/>
+	<classpathentry kind="lib" path="libs/soundcloud-0.2.1-jar-with-dependencies.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
