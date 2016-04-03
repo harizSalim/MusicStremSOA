@@ -1,8 +1,8 @@
 package com.musicstream.main;
 
-import java.io.IOException;
-
-import com.musicstream.utils.HttpConnectionExample;
+import com.google.gson.Gson;
+import com.musicstream.soa.Connect;
+import com.musicstream.soa.Greeting;
 
 /**
  * @author Malek Main Function
@@ -19,14 +19,10 @@ public class StartApp {
 		 * System.out.println("Resp:" + resp);
 		 */
 
-		HttpConnectionExample http = new HttpConnectionExample();
-		try {
-			http.doGet("http://127.0.0.1:8080/tracks");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		Connect http = new Connect();
+		String data = http.getJSON("http://localhost:8080/greeting", 100000000);
+		Greeting msg = new Gson().fromJson(data, Greeting.class);
+		System.out.println(msg);
 	}
 
 }
