@@ -6,6 +6,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 
+import org.json.JSONException;
+
 import com.musicstream.utils.AppUtils;
 
 /**
@@ -18,7 +20,7 @@ public class HomeFrame extends JFrame {
 	// Menu Items
 	public AppUtils appU;
 
-	public HomeFrame() {
+	public HomeFrame() throws JSONException {
 		this.setTitle("Music Stream -- EL Kamel Malek & Salim Hariz");
 		appU = new AppUtils();
 		tabsPanel = new JTabbedPane();
@@ -35,8 +37,9 @@ public class HomeFrame extends JFrame {
 	/**
 	 * Initializing the Frame's Tabs ; The Tabs are developed in separate files
 	 * and extends the JPanel Object
+	 * @throws JSONException 
 	 */
-	private void initTabs() {
+	private void initTabs() throws JSONException {
 		// Tracks Tab
 		ImageIcon iconTracks = new ImageIcon("images/tracks.png");
 		TraksPan trackTab = new TraksPan();

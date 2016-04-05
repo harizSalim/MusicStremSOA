@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.voidplus.soundcloud.SoundCloud;
+import de.voidplus.soundcloud.User;
 
 @RestController
 public class SoundcloudController implements ErrorController {
@@ -39,7 +40,7 @@ public class SoundcloudController implements ErrorController {
 		ArrayList<String> urlCover = new ArrayList<>();
 		ArrayList<String> urlStream = new ArrayList<>();
 		ArrayList<Integer> lengths = new ArrayList<>();
-		for (int i = 0; i < soundcloud.getMeFavorites().size(); i++) {
+		for (int i = 0; i < soundcloud.findTrack(search).size(); i++) {
 			titles.add(soundcloud.findTrack(search).get(i).getTitle());
 			urlCover.add(soundcloud.findTrack(search).get(i).getArtworkUrl());
 			urlStream.add(soundcloud.findTrack(search).get(i).getStreamUrl());
@@ -52,19 +53,23 @@ public class SoundcloudController implements ErrorController {
 	public SoundcloudModel userPlaylists() {
 		ArrayList<String> titles = new ArrayList<>();
 		ArrayList<String> urlCover = new ArrayList<>();
-		for (int i = 0; i < soundcloud.getMeFavorites().size(); i++) {
+		User me = soundcloud.getMe();
+		Integer count = me.getPlaylistCount();
+		for (int i = 0; i < count; i++) {
 			titles.add(soundcloud.getMePlaylists().get(i).getTitle());
 			urlCover.add(soundcloud.getMePlaylists().get(i).getArtworkUrl());
 		}
 		return (new SoundcloudModel(titles, urlCover));
 	}
-	 @RequestMapping(value = PATH)
-	    public String error() {
-	        return "Error handling";
-	    }
+
+	@RequestMapping(value = PATH)
+	public String error() {
+		return "Error handling";
+	}
+
 	@Override
 	public String getErrorPath() {
 		// TODO Auto-generated method stub
-		 return PATH;
+		return PATH;
 	}
 }

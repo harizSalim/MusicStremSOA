@@ -16,6 +16,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import org.json.JSONException;
+
 import com.musicstream.homeTabs.HomeFrame;
 import com.musicstream.api.DeezerApi;
 import com.musicstream.api.SoundCloudApi;
@@ -117,12 +119,12 @@ public class MainAuthFrame extends JFrame implements WindowListener {
 	class connectWithSoundCloudListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			//if (statusDeezer == true) {
-				//loginSoundCloud.setEnabled(false);
-				//loginSoundCloud.setBackground(Color.GRAY);
-				loginSoundCloud.setVisible(true);
-				loginSoundCloud.toFront();
-			//}
+			// if (statusDeezer == true) {
+			// loginSoundCloud.setEnabled(false);
+			// loginSoundCloud.setBackground(Color.GRAY);
+			loginSoundCloud.setVisible(true);
+			loginSoundCloud.toFront();
+			// }
 		}
 	}
 
@@ -176,9 +178,16 @@ public class MainAuthFrame extends JFrame implements WindowListener {
 							succWindow.toFront();
 						} else {
 							getOuter().setVisible(false);
-							HomeFrame homeFrame = new HomeFrame();
-							homeFrame.setVisible(true);
-							homeFrame.toFront();
+							HomeFrame homeFrame;
+							try {
+								homeFrame = new HomeFrame();
+								homeFrame.setVisible(true);
+								homeFrame.toFront();
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+
 						}
 
 						// Data storage and encryption
@@ -247,9 +256,16 @@ public class MainAuthFrame extends JFrame implements WindowListener {
 							succWindow.toFront();
 						} else {
 							getOuter().setVisible(false);
-							HomeFrame homeFrame = new HomeFrame();
-							homeFrame.setVisible(true);
-							homeFrame.toFront();
+							HomeFrame homeFrame;
+							try {
+								homeFrame = new HomeFrame();
+								homeFrame.setVisible(true);
+								homeFrame.toFront();
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+
 						}
 						// Data storage and encryption
 						String key = "Mary has one cat";
@@ -297,7 +313,12 @@ public class MainAuthFrame extends JFrame implements WindowListener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			getOuter().setVisible(false);
-			HomeFrame home = new HomeFrame();
+			try {
+				HomeFrame home = new HomeFrame();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
