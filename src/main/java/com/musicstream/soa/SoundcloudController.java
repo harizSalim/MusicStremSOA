@@ -16,7 +16,7 @@ public class SoundcloudController implements ErrorController {
 			"481ca2dc5f8ff18044c77239659a5b59",
 			"1067035a0baee3932e79847bae144fa1", "testing.kamel@gmail.com",
 			"azerty123");
-	private static final String PATH = "/error";
+	private static final String PATH = "/errorSC";
 
 	@RequestMapping("/scusertracks")
 	public SoundcloudModel userTracks() {
@@ -95,7 +95,7 @@ public class SoundcloudController implements ErrorController {
 
 	@RequestMapping(value = PATH)
 	public String error() {
-		return "Error handling";
+		return "Error handling SoundCloud";
 	}
 
 	@Override

@@ -20,7 +20,7 @@ public class DeezerController implements ErrorController {
 			new HttpResourceConnection());
 	private UserId uID = new UserId(905831863L);
 	private User user = deezerClient.get(uID);
-	private static final String PATH = "/error";
+	private static final String PATH = "/errorDZ";
 
 	@RequestMapping("/dzusertracks")
 	public DeezerModel userTracks() {
@@ -105,7 +105,7 @@ public class DeezerController implements ErrorController {
 
 	@RequestMapping(value = PATH)
 	public String error() {
-		return "Error handling";
+		return "Error handling Deezer";
 	}
 
 	@Override
