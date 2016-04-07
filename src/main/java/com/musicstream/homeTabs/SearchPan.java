@@ -1,7 +1,9 @@
 package com.musicstream.homeTabs;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -80,8 +82,8 @@ public class SearchPan extends JPanel implements ActionListener,
 		this.add(scroll);
 		scroll.setVisible(false);
 		textField = new JTextField();
-		textField.setBounds(700, 7, 250, 40);
-
+		 textField.setBounds(700, 5, 350, 200);
+		 textField.setPreferredSize(new Dimension(100,30));
 		search = new JButton("Search");
 		search.setBounds(1000, 7, 80, 40);
 		search.addActionListener(this);
@@ -89,12 +91,16 @@ public class SearchPan extends JPanel implements ActionListener,
 		player.setBounds(10, appU.getScreenHeight() - 150,
 				appU.getScreenWidth() - 40, 80);
 		player.setVisible(false);
-
-		this.add(label);
-		this.add(textField);
-		this.add(search);
-		this.add(player);
-		this.setLayout(null);
+		BorderLayout layout = new BorderLayout();
+		this.setLayout(layout);
+		JPanel headPanel = new JPanel();
+		headPanel.setLayout(new FlowLayout());
+		headPanel.add(label);
+		headPanel.add(textField);
+		headPanel.add(search);
+		this.add(headPanel, BorderLayout.NORTH);
+		this.add(scroll, BorderLayout.CENTER);
+		this.add(player, BorderLayout.SOUTH);
 
 	}
 

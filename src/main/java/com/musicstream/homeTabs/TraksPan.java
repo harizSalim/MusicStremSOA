@@ -1,5 +1,6 @@
 package com.musicstream.homeTabs;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -24,7 +25,6 @@ import org.apache.commons.lang.ArrayUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import org.json.JSONArray;
 import com.musicstream.player.MusicPlayer;
 import com.musicstream.utils.AppUtils;
 import com.musicstream.utils.JsonReader;
@@ -52,10 +52,8 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 		tracksSource = new String[100];
 		jsonReader = new JsonReader();
 		try {
-			jsonSC = jsonReader
-					.readJsonFromUrl("http://localhost:8080/scusertracks");
-			jsonDZ = jsonReader
-					.readJsonFromUrl("http://localhost:8080/dzusertracks");
+			jsonSC = jsonReader.readJsonFromUrl("http://localhost:8080/scusertracks");
+			jsonDZ = jsonReader.readJsonFromUrl("http://localhost:8080/dzusertracks");
 		} catch (IOException | JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -68,10 +66,8 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 		imageMap = createImageMap(nameList);
 
 		try {
-			jsonSCStream = jsonReader
-					.readJsonFromUrl("http://localhost:8080/scusertracksstream");
-			jsonDZStream = jsonReader
-					.readJsonFromUrl("http://localhost:8080/dzusertracksstream");
+			jsonSCStream = jsonReader.readJsonFromUrl("http://localhost:8080/scusertracksstream");
+			jsonDZStream = jsonReader.readJsonFromUrl("http://localhost:8080/dzusertracksstream");
 		} catch (IOException | JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -84,23 +80,20 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 		list.addListSelectionListener(this);
 
 		JScrollPane scroll = new JScrollPane(list);
-		scroll.setPreferredSize(new Dimension(appU.getScreenWidth() - 60, appU
-				.getScreenHeight() - 60));
-		scroll.setBounds(10, 50, appU.getScreenWidth() - 40,
-				appU.getScreenHeight() - 180);
+		scroll.setPreferredSize(new Dimension(appU.getScreenWidth() - 60, appU.getScreenHeight() - 60));
+		scroll.setBounds(10, 50, appU.getScreenWidth() - 40, appU.getScreenHeight() - 180);
 
 		JLabel label = new JLabel("Welcome : "/* + getUserName() */);
 		label.setBounds(10, -15, 250, 75);
 		label.setFont(fontLabel);
 
-		player.setBounds(10, appU.getScreenHeight() - 150,
-				appU.getScreenWidth() - 40, 80);
+		player.setBounds(10, appU.getScreenHeight() - 150, appU.getScreenWidth() - 40, 80);
 		player.setVisible(false);
-
-		this.add(label);
-		this.add(scroll);
-		this.add(player);
-		this.setLayout(null);
+		BorderLayout layout = new BorderLayout();
+		this.setLayout(layout);
+		this.add(label, BorderLayout.NORTH);
+		this.add(scroll, BorderLayout.CENTER);
+		this.add(player, BorderLayout.SOUTH);
 
 	}
 
@@ -113,11 +106,10 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 		Font font = new Font("helvitica", Font.BOLD, 24);
 
 		@Override
-		public Component getListCellRendererComponent(JList list, Object value,
-				int index, boolean isSelected, boolean cellHasFocus) {
+		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+				boolean cellHasFocus) {
 
-			JLabel label = (JLabel) super.getListCellRendererComponent(list,
-					value, index, isSelected, cellHasFocus);
+			JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 			label.setIcon(imageMap.get(value));
 			label.setHorizontalTextPosition(SwingConstants.RIGHT);
 			label.setFont(font);
@@ -131,23 +123,21 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 	 *         respective picture
 	 * @throws JSONException
 	 */
-	private Map<String, ImageIcon> createImageMap(String[] list)
-			throws JSONException {
+	private Map<String, ImageIcon> createImageMap(String[] list) throws JSONException {
 		Map<String, ImageIcon> map = new HashMap<>();
-		org.json.JSONArray sc,dz, scCover,dzCover;
-		sc=(org.json.JSONArray) jsonSC.get("title");
-		dz=(org.json.JSONArray) jsonDZ.get("title");
-		scCover=(org.json.JSONArray)  jsonSC.get("urlCover");
-		dzCover=(org.json.JSONArray) jsonDZ.get("urlCover");
-		int nbSc =  sc.length();
-		int nbDz =dz.length();
+		org.json.JSONArray sc, dz, scCover, dzCover;
+		sc = (org.json.JSONArray) jsonSC.get("title");
+		dz = (org.json.JSONArray) jsonDZ.get("title");
+		scCover = (org.json.JSONArray) jsonSC.get("urlCover");
+		dzCover = (org.json.JSONArray) jsonDZ.get("urlCover");
+		int nbSc = sc.length();
+		int nbDz = dz.length();
 		// ArrayList<com.zeloon.deezer.domain.Track> tracksDeezer =
 		// getUserTracksDeezer();
 		for (int i = 0; i < nbSc; i++) {
 			try {
 				String url = scCover.getString(i);
-				map.put(sc.getString(i), new ImageIcon(
-						new URL(url)));
+				map.put(sc.getString(i), new ImageIcon(new URL(url)));
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
@@ -191,11 +181,11 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 	private String[] setNameList() throws JSONException {
 
 		// ArrayList<Track> tracks = getUserTracks();
-		org.json.JSONArray sc,dz;
-		sc=(org.json.JSONArray) jsonSC.get("title");
-		dz=(org.json.JSONArray) jsonDZ.get("title");
-		int nbSc =  sc.length();
-		int nbDz =dz.length();
+		org.json.JSONArray sc, dz;
+		sc = (org.json.JSONArray) jsonSC.get("title");
+		dz = (org.json.JSONArray) jsonDZ.get("title");
+		int nbSc = sc.length();
+		int nbDz = dz.length();
 		// ArrayList<com.zeloon.deezer.domain.Track> tracksDeezer =
 		// getUserTracksDeezer();
 		String[] nameList = new String[nbSc + nbDz];
@@ -244,34 +234,34 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 	 * @throws JSONException
 	 */
 	private String[] getTracksStream() throws JSONException {
-		org.json.JSONArray sc,dz;
-		
-		sc=(org.json.JSONArray) jsonSCStream.get("urlStream");
-		dz=(org.json.JSONArray) jsonDZStream.get("urlStream");
-		String[] scS= new String[sc.length()];
-		String[] dzS= new String[dz.length()];
-		for(int i=0;i<sc.length();i++){
-			scS[i]=sc.getString(i);
+		org.json.JSONArray sc, dz;
+
+		sc = (org.json.JSONArray) jsonSCStream.get("urlStream");
+		dz = (org.json.JSONArray) jsonDZStream.get("urlStream");
+		String[] scS = new String[sc.length()];
+		String[] dzS = new String[dz.length()];
+		for (int i = 0; i < sc.length(); i++) {
+			scS[i] = sc.getString(i);
 		}
-		for(int i=0;i<dz.length();i++){
-			dzS[i]=dz.getString(i);
+		for (int i = 0; i < dz.length(); i++) {
+			dzS[i] = dz.getString(i);
 		}
-		 
+
 		return (String[]) ArrayUtils.addAll(scS, dzS);
 	}
 
 	private int[] getTrackLength() throws JSONException {
-		org.json.JSONArray sc,dz;
-		
-		sc=(org.json.JSONArray) jsonSCStream.get("length");
-		dz=(org.json.JSONArray) jsonDZStream.get("length");
-		int[] scS=new int[sc.length()];
-		int[] dzS=new int[dz.length()];
-		for(int i=0;i<sc.length();i++){
-			scS[i]=sc.getInt(i);
+		org.json.JSONArray sc, dz;
+
+		sc = (org.json.JSONArray) jsonSCStream.get("length");
+		dz = (org.json.JSONArray) jsonDZStream.get("length");
+		int[] scS = new int[sc.length()];
+		int[] dzS = new int[dz.length()];
+		for (int i = 0; i < sc.length(); i++) {
+			scS[i] = sc.getInt(i);
 		}
-		for(int i=0;i<dz.length();i++){
-			dzS[i]=dz.getInt(i);
+		for (int i = 0; i < dz.length(); i++) {
+			dzS[i] = dz.getInt(i);
 		}
 		return (int[]) ArrayUtils.addAll(scS, dzS);
 	}
