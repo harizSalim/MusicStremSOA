@@ -116,12 +116,18 @@ public class PlaylistsPan extends JPanel implements ListSelectionListener {
 		// ArrayList<Playlist> playlists = getUserPlaylists();
 		// ArrayList<com.zeloon.deezer.domain.Playlist> playlistsDeezer =
 		// getUserPlaylistsDeezer();
-		int nbSc = ((int[]) (jsonSC.get("title"))).length;
-		int nbDz = ((int[]) (jsonDZ.get("title"))).length;
+		org.json.JSONArray sc,dz, scCover,dzCover;
+		sc=(org.json.JSONArray) jsonSC.get("playlistName");
+		dz=(org.json.JSONArray) jsonDZ.get("playlistName");
+		scCover=(org.json.JSONArray)  jsonSC.get("playlistUrlCover");
+		dzCover=(org.json.JSONArray) jsonDZ.get("playlistUrlCover");
+		int nbSc =  sc.length();
+		int nbDz =dz.length();
+		 
 		for (int i = 0; i < nbSc; i++) {
 			try {
-				String url = ((String[]) jsonSC.get("urlCover"))[i];
-				map.put(((String[]) jsonSC.get("title"))[i], new ImageIcon(
+				String url = scCover.getString(i);
+				map.put(sc.getString(i), new ImageIcon(
 						new URL(url)));
 			} catch (Exception ex) {
 				ex.printStackTrace();
@@ -129,9 +135,9 @@ public class PlaylistsPan extends JPanel implements ListSelectionListener {
 		}
 		for (int i = 0; i < nbDz; i++) {
 			try {
-				String artworkUrl = ((String[]) jsonDZ.get("urlCover"))[i];
+				String artworkUrl =  dzCover.getString(i);
 				URL url = new URL(artworkUrl);
-				map.put(((String[]) jsonDZ.get("title"))[i], new ImageIcon(url));
+				map.put(dz.getString(i), new ImageIcon(url));
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
@@ -166,14 +172,18 @@ public class PlaylistsPan extends JPanel implements ListSelectionListener {
 		// ArrayList<Playlist> playlists = getUserPlaylists();
 		// ArrayList<com.zeloon.deezer.domain.Playlist> playlistsDeezer =
 		// getUserPlaylistsDeezer();
-		int nbSc = ((int[]) (jsonSC.get("title"))).length;
-		int nbDz = ((int[]) (jsonDZ.get("title"))).length;
+		org.json.JSONArray sc,dz;
+		sc=(org.json.JSONArray) jsonSC.get("playlistName");
+		dz=(org.json.JSONArray) jsonDZ.get("playlistName");
+		int nbSc =  sc.length();
+		int nbDz =dz.length();
+		
 		String[] nameList = new String[nbSc + nbDz];
 		for (int i = 0; i < nbSc; i++) {
-			nameList[i] = ((String[]) jsonSC.get("title"))[i];
+			nameList[i] = sc.getString(i);
 		}
 		for (int i = 0; i < nbDz; i++) {
-			nameList[i + nbSc] = ((String[]) jsonDZ.get("title"))[i];
+			nameList[i + nbSc] = dz.getString(i);
 		}
 		return nameList;
 	}

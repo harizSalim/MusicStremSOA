@@ -24,6 +24,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import org.json.JSONArray;
 import com.musicstream.player.MusicPlayer;
 import com.musicstream.utils.AppUtils;
 import com.musicstream.utils.JsonReader;
@@ -133,15 +134,19 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 	private Map<String, ImageIcon> createImageMap(String[] list)
 			throws JSONException {
 		Map<String, ImageIcon> map = new HashMap<>();
-		// ArrayList<Track> tracks = getUserTracks();
-		int nbSc = ((int[]) (jsonSC.get("title"))).length;
-		int nbDz = ((int[]) (jsonDZ.get("title"))).length;
+		org.json.JSONArray sc,dz, scCover,dzCover;
+		sc=(org.json.JSONArray) jsonSC.get("title");
+		dz=(org.json.JSONArray) jsonDZ.get("title");
+		scCover=(org.json.JSONArray)  jsonSC.get("urlCover");
+		dzCover=(org.json.JSONArray) jsonDZ.get("urlCover");
+		int nbSc =  sc.length();
+		int nbDz =dz.length();
 		// ArrayList<com.zeloon.deezer.domain.Track> tracksDeezer =
 		// getUserTracksDeezer();
 		for (int i = 0; i < nbSc; i++) {
 			try {
-				String url = ((String[]) jsonSC.get("urlCover"))[i];
-				map.put(((String[]) jsonSC.get("title"))[i], new ImageIcon(
+				String url = scCover.getString(i);
+				map.put(sc.getString(i), new ImageIcon(
 						new URL(url)));
 			} catch (Exception ex) {
 				ex.printStackTrace();
@@ -152,9 +157,9 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 
 				// TrackId tID = new TrackId(tracksDeezer.get(i).getId());
 				// deezerApi.getPreviewTrack(tID);
-				String artworkUrl = ((String[]) jsonDZ.get("urlCover"))[i];
+				String artworkUrl = dzCover.getString(i);
 				URL url = new URL(artworkUrl);
-				map.put(((String[]) jsonDZ.get("title"))[i], new ImageIcon(url));
+				map.put(dz.getString(i), new ImageIcon(url));
 
 			} catch (Exception ex) {
 				// ex.printStackTrace();
@@ -186,17 +191,20 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 	private String[] setNameList() throws JSONException {
 
 		// ArrayList<Track> tracks = getUserTracks();
-		int nbSc = ((int[]) (jsonSC.get("title"))).length;
-		int nbDz = ((int[]) (jsonDZ.get("title"))).length;
+		org.json.JSONArray sc,dz;
+		sc=(org.json.JSONArray) jsonSC.get("title");
+		dz=(org.json.JSONArray) jsonDZ.get("title");
+		int nbSc =  sc.length();
+		int nbDz =dz.length();
 		// ArrayList<com.zeloon.deezer.domain.Track> tracksDeezer =
 		// getUserTracksDeezer();
 		String[] nameList = new String[nbSc + nbDz];
 		for (int i = 0; i < nbSc; i++) {
-			nameList[i] = ((String[]) jsonSC.get("title"))[i];
+			nameList[i] = sc.getString(i);
 			tracksSource[i] = "Soundcloud";
 		}
 		for (int i = 0; i < nbDz; i++) {
-			nameList[i + nbSc] = ((String[]) jsonDZ.get("title"))[i];
+			nameList[i + nbSc] = dz.getString(i);
 			tracksSource[i + nbSc] = "Deezer";
 		}
 		return nameList;
@@ -236,14 +244,35 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 	 * @throws JSONException
 	 */
 	private String[] getTracksStream() throws JSONException {
-		String[] sc = (String[]) (jsonSCStream.get("urlStream"));
-		String[] deez = (String[]) (jsonDZStream.get("urlStream"));
-		return (String[]) ArrayUtils.addAll(sc, deez);
+		org.json.JSONArray sc,dz;
+		
+		sc=(org.json.JSONArray) jsonSCStream.get("urlStream");
+		dz=(org.json.JSONArray) jsonDZStream.get("urlStream");
+		String[] scS= new String[sc.length()];
+		String[] dzS= new String[dz.length()];
+		for(int i=0;i<sc.length();i++){
+			scS[i]=sc.getString(i);
+		}
+		for(int i=0;i<dz.length();i++){
+			dzS[i]=dz.getString(i);
+		}
+		 
+		return (String[]) ArrayUtils.addAll(scS, dzS);
 	}
 
 	private int[] getTrackLength() throws JSONException {
-		int[] sc = (int[]) (jsonSCStream.get("length"));
-		int[] deez = (int[]) (jsonDZStream.get("length"));
-		return (int[]) ArrayUtils.addAll(sc, deez);
+		org.json.JSONArray sc,dz;
+		
+		sc=(org.json.JSONArray) jsonSCStream.get("length");
+		dz=(org.json.JSONArray) jsonDZStream.get("length");
+		int[] scS=new int[sc.length()];
+		int[] dzS=new int[dz.length()];
+		for(int i=0;i<sc.length();i++){
+			scS[i]=sc.getInt(i);
+		}
+		for(int i=0;i<dz.length();i++){
+			dzS[i]=dz.getInt(i);
+		}
+		return (int[]) ArrayUtils.addAll(scS, dzS);
 	}
 }

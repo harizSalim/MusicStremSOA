@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.musicstream.homeTabs.HomeFrame;
 import com.musicstream.utils.JsonReader;
  
 
@@ -13,10 +14,10 @@ import com.musicstream.utils.JsonReader;
  */
 public class StartApp {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws JSONException {
 		// MainAuthFrame auth = new MainAuthFrame();
-
-		JsonReader js = new JsonReader();
+		HomeFrame hm = new HomeFrame();
+	/*	JsonReader js = new JsonReader();
 		JSONObject json;
 		try {
 			json = js.readJsonFromUrl("http://localhost:8080/scuserplaylists");
@@ -25,7 +26,7 @@ public class StartApp {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		   
+		   */
 		     
 	  
 	}
