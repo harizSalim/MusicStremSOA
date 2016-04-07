@@ -50,7 +50,6 @@ public class DeezerController implements ErrorController {
 			// urlCover.add(deezerClient.getTracks(uID).getData().get(i).getAlbum().getCover());
 			TrackId tID = new TrackId(deezerClient.getTracks(uID).getData()
 					.get(i).getId());
-			System.out.println(tID);
 			urlStream.add(deezerClient.get(tID).getPreview());
 			lengths.add(30);
 		}
