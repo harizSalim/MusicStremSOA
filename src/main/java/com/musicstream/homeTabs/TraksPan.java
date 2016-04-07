@@ -124,8 +124,8 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 			throws JSONException {
 		Map<String, ImageIcon> map = new HashMap<>();
 		// ArrayList<Track> tracks = getUserTracks();
-		int nbSc = ((int[]) (jsonSC.get("length"))).length;
-		int nbDz = ((int[]) (jsonDZ.get("length"))).length;
+		int nbSc = ((int[]) (jsonSC.get("title"))).length;
+		int nbDz = ((int[]) (jsonDZ.get("title"))).length;
 		// ArrayList<com.zeloon.deezer.domain.Track> tracksDeezer =
 		// getUserTracksDeezer();
 		for (int i = 0; i < nbSc; i++) {
@@ -176,8 +176,8 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 	private String[] setNameList() throws JSONException {
 
 		// ArrayList<Track> tracks = getUserTracks();
-		int nbSc = ((int[]) (jsonSC.get("length"))).length;
-		int nbDz = ((int[]) (jsonDZ.get("length"))).length;
+		int nbSc = ((int[]) (jsonSC.get("title"))).length;
+		int nbDz = ((int[]) (jsonDZ.get("title"))).length;
 		// ArrayList<com.zeloon.deezer.domain.Track> tracksDeezer =
 		// getUserTracksDeezer();
 		String[] nameList = new String[nbSc + nbDz];
