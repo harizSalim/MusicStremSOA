@@ -65,6 +65,16 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 		nameList = setNameList();
 		fontLabel = new Font("helvitica", Font.BOLD, 18);
 		imageMap = createImageMap(nameList);
+
+		try {
+			jsonSCStream = jsonReader
+					.readJsonFromUrl("http://localhost:8080/scusertracksstream");
+			jsonDZStream = jsonReader
+					.readJsonFromUrl("http://localhost:8080/dzusertracksstream");
+		} catch (IOException | JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		streamU = this.getTracksStream();
 		tracksLength = this.getTrackLength();
 
@@ -202,15 +212,6 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 
 	@Override
 	public void valueChanged(ListSelectionEvent arg0) {
-		try {
-			jsonSCStream = jsonReader
-					.readJsonFromUrl("http://localhost:8080/scusertracksstream");
-			jsonDZStream = jsonReader
-					.readJsonFromUrl("http://localhost:8080/dzusertracksstream");
-		} catch (IOException | JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception ex) {
