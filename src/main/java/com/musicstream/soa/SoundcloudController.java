@@ -27,6 +27,21 @@ public class SoundcloudController implements ErrorController {
 		for (int i = 0; i < soundcloud.getMeFavorites().size(); i++) {
 			titles.add(soundcloud.getMeFavorites().get(i).getTitle());
 			urlCover.add(soundcloud.getMeFavorites().get(i).getArtworkUrl());
+			// urlStream.add(soundcloud.getMeFavorites().get(i).getStreamUrl());
+			// lengths.add(soundcloud.getMeFavorites().get(i).getDuration());
+		}
+		return (new SoundcloudModel(titles, urlCover, urlStream, lengths));
+	}
+
+	@RequestMapping("/scusertracksstream")
+	public SoundcloudModel userTracksStream() {
+		ArrayList<String> titles = new ArrayList<>();
+		ArrayList<String> urlCover = new ArrayList<>();
+		ArrayList<String> urlStream = new ArrayList<>();
+		ArrayList<Integer> lengths = new ArrayList<>();
+		for (int i = 0; i < soundcloud.getMeFavorites().size(); i++) {
+			// titles.add(soundcloud.getMeFavorites().get(i).getTitle());
+			// urlCover.add(soundcloud.getMeFavorites().get(i).getArtworkUrl());
 			urlStream.add(soundcloud.getMeFavorites().get(i).getStreamUrl());
 			lengths.add(soundcloud.getMeFavorites().get(i).getDuration());
 		}
@@ -43,6 +58,22 @@ public class SoundcloudController implements ErrorController {
 		for (int i = 0; i < soundcloud.findTrack(search).size(); i++) {
 			titles.add(soundcloud.findTrack(search).get(i).getTitle());
 			urlCover.add(soundcloud.findTrack(search).get(i).getArtworkUrl());
+			// urlStream.add(soundcloud.findTrack(search).get(i).getStreamUrl());
+			// lengths.add(soundcloud.findTrack(search).get(i).getDuration());
+		}
+		return (new SoundcloudModel(titles, urlCover, urlStream, lengths));
+	}
+
+	@RequestMapping("/scsearchtracksstream")
+	public SoundcloudModel searchTracksStream(
+			@RequestParam(value = "search") String search) {
+		ArrayList<String> titles = new ArrayList<>();
+		ArrayList<String> urlCover = new ArrayList<>();
+		ArrayList<String> urlStream = new ArrayList<>();
+		ArrayList<Integer> lengths = new ArrayList<>();
+		for (int i = 0; i < soundcloud.findTrack(search).size(); i++) {
+			// titles.add(soundcloud.findTrack(search).get(i).getTitle());
+			// urlCover.add(soundcloud.findTrack(search).get(i).getArtworkUrl());
 			urlStream.add(soundcloud.findTrack(search).get(i).getStreamUrl());
 			lengths.add(soundcloud.findTrack(search).get(i).getDuration());
 		}

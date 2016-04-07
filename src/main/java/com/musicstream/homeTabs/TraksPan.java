@@ -44,7 +44,7 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 	private int[] tracksLength;
 	private String[] tracksSource;
 	private JsonReader jsonReader;
-	private JSONObject jsonSC, jsonDZ;
+	private JSONObject jsonSC, jsonDZ, jsonSCStream, jsonDZStream;
 
 	public TraksPan() throws JSONException {
 		appU = new AppUtils();
@@ -202,7 +202,15 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 
 	@Override
 	public void valueChanged(ListSelectionEvent arg0) {
-
+		try {
+			jsonSCStream = jsonReader
+					.readJsonFromUrl("http://localhost:8080/scusertracksstream");
+			jsonDZStream = jsonReader
+					.readJsonFromUrl("http://localhost:8080/dzusertracksstream");
+		} catch (IOException | JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception ex) {
@@ -227,14 +235,14 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 	 * @throws JSONException
 	 */
 	private String[] getTracksStream() throws JSONException {
-		String[] sc = (String[]) (jsonSC.get("urlStream"));
-		String[] deez = (String[]) (jsonDZ.get("urlStream"));
+		String[] sc = (String[]) (jsonSCStream.get("urlStream"));
+		String[] deez = (String[]) (jsonDZStream.get("urlStream"));
 		return (String[]) ArrayUtils.addAll(sc, deez);
 	}
 
 	private int[] getTrackLength() throws JSONException {
-		int[] sc = (int[]) (jsonSC.get("length"));
-		int[] deez = (int[]) (jsonDZ.get("length"));
+		int[] sc = (int[]) (jsonSCStream.get("length"));
+		int[] deez = (int[]) (jsonDZStream.get("length"));
 		return (int[]) ArrayUtils.addAll(sc, deez);
 	}
 }
