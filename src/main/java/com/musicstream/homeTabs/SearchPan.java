@@ -202,32 +202,35 @@ public class SearchPan extends JPanel implements ActionListener,
 		// ArrayList<com.zeloon.deezer.domain.Track>();
 		// tracks = getSearchResult(title);
 		// tracksDeezer = getSearchResultDeezer(title);
-		int nbSc = ((int[]) (jsonSC.get("title"))).length;
-		int nbDz = ((int[]) (jsonDZ.get("title"))).length;
+		org.json.JSONArray sc, dz, scCover, dzCover;
+		sc = (org.json.JSONArray) jsonSC.get("title");
+		dz = (org.json.JSONArray) jsonDZ.get("title");
+		scCover = (org.json.JSONArray) jsonSC.get("urlCover");
+		dzCover = (org.json.JSONArray) jsonDZ.get("urlCover");
+		int nbSc = sc.length();
+		int nbDz = dz.length();
 		String artworkUrl;
 		for (int i = 0; i < nbSc; i++) {
 			try {
-				String url = ((String[]) jsonSC.get("urlCover"))[i];
-				map.put(((String[]) jsonSC.get("title"))[i], new ImageIcon(
-						new URL(url)));
+				String url = scCover.getString(i);
+				map.put(sc.getString(i), new ImageIcon(new URL(url)));
 
 			} catch (Exception ex) {
 				// Managing Exception when track does'nt have a cover Image
 				artworkUrl = "https://yt3.ggpht.com/-b05GwzWbqZE/AAAAAAAAAAI/AAAAAAAAAAA/_d2WA1qZyi8/s100-c-k-no/photo.jpg";
-				map.put(((String[]) jsonSC.get("title"))[i], new ImageIcon(
-						new URL(artworkUrl)));
+				map.put(sc.getString(i), new ImageIcon(new URL(artworkUrl)));
 			}
 		}
 		for (int i = 0; i < nbDz; i++) {
 			try {
-				artworkUrl = ((String[]) jsonDZ.get("urlCover"))[i];
+				artworkUrl = dzCover.getString(i);
 				URL url = new URL(artworkUrl);
-				map.put(((String[]) jsonDZ.get("title"))[i], new ImageIcon(url));
+				map.put(dz.getString(i), new ImageIcon(url));
 			} catch (Exception ex) {
 				// ex.printStackTrace();
 				artworkUrl = "https://yt3.ggpht.com/-b05GwzWbqZE/AAAAAAAAAAI/AAAAAAAAAAA/_d2WA1qZyi8/s100-c-k-no/photo.jpg";
 				URL url = new URL(artworkUrl);
-				map.put(((String[]) jsonDZ.get("title"))[i], new ImageIcon(url));
+				map.put(dz.getString(i), new ImageIcon(url));
 			}
 		}
 		return map;
@@ -260,15 +263,18 @@ public class SearchPan extends JPanel implements ActionListener,
 		// ArrayList<Track> tracks = getSearchResult(title);
 		// ArrayList<com.zeloon.deezer.domain.Track> tracksDeezer =
 		// getSearchResultDeezer(title);
-		int nbSc = ((int[]) (jsonSC.get("title"))).length;
-		int nbDz = ((int[]) (jsonDZ.get("title"))).length;
+		org.json.JSONArray sc, dz;
+		sc = (org.json.JSONArray) jsonSC.get("title");
+		dz = (org.json.JSONArray) jsonDZ.get("title");
+		int nbSc = sc.length();
+		int nbDz = dz.length();
 		String[] nameList = new String[nbSc + nbDz];
 		for (int i = 0; i < nbSc; i++) {
-			nameList[i] = ((String[]) jsonSC.get("title"))[i];
+			nameList[i] = sc.getString(i);
 			tracksSource[i] = "Soundcloud";
 		}
 		for (int i = 0; i < nbDz; i++) {
-			nameList[i + nbSc] = ((String[]) jsonDZ.get("title"))[i];
+			nameList[i + nbSc] = dz.getString(i);
 			tracksSource[i + nbSc] = "Deezer";
 		}
 		return nameList;
@@ -279,15 +285,35 @@ public class SearchPan extends JPanel implements ActionListener,
 	 * @throws JSONException
 	 */
 	private String[] getTracksStream() throws JSONException {
-		String[] sc = (String[]) (jsonSCStream.get("urlStream"));
-		String[] deez = (String[]) (jsonDZStream.get("urlStream"));
-		return (String[]) ArrayUtils.addAll(sc, deez);
+		org.json.JSONArray sc, dz;
+
+		sc = (org.json.JSONArray) jsonSCStream.get("urlStream");
+		dz = (org.json.JSONArray) jsonDZStream.get("urlStream");
+		String[] scS = new String[sc.length()];
+		String[] dzS = new String[dz.length()];
+		for (int i = 0; i < sc.length(); i++) {
+			scS[i] = sc.getString(i);
+		}
+		for (int i = 0; i < dz.length(); i++) {
+			dzS[i] = dz.getString(i);
+		}
+		return (String[]) ArrayUtils.addAll(scS, dzS);
 	}
 
 	private int[] getTrackLength() throws JSONException {
-		int[] sc = (int[]) (jsonSCStream.get("length"));
-		int[] deez = (int[]) (jsonDZStream.get("length"));
-		return (int[]) ArrayUtils.addAll(sc, deez);
+		org.json.JSONArray sc, dz;
+
+		sc = (org.json.JSONArray) jsonSCStream.get("length");
+		dz = (org.json.JSONArray) jsonDZStream.get("length");
+		int[] scS = new int[sc.length()];
+		int[] dzS = new int[dz.length()];
+		for (int i = 0; i < sc.length(); i++) {
+			scS[i] = sc.getInt(i);
+		}
+		for (int i = 0; i < dz.length(); i++) {
+			dzS[i] = dz.getInt(i);
+		}
+		return (int[]) ArrayUtils.addAll(scS, dzS);
 	}
 
 	@Override
