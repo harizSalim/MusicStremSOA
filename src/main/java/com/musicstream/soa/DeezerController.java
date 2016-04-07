@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.zeloon.deezer.client.DeezerClient;
 import com.zeloon.deezer.domain.User;
+import com.zeloon.deezer.domain.internal.TrackId;
 import com.zeloon.deezer.domain.internal.UserId;
 import com.zeloon.deezer.domain.internal.search.Search;
 import com.zeloon.deezer.domain.internal.search.SearchOrder;
@@ -47,8 +48,10 @@ public class DeezerController implements ErrorController {
 		for (int i = 0; i < deezerClient.getTracks(uID).getData().size(); i++) {
 			// titles.add(deezerClient.getTracks(uID).getData().get(i).getTitle());
 			// urlCover.add(deezerClient.getTracks(uID).getData().get(i).getAlbum().getCover());
-			urlStream.add(deezerClient.getTracks(uID).getData().get(i)
-					.getPreview());
+			TrackId tID = new TrackId(deezerClient.getTracks(uID).getData()
+					.get(i).getId());
+			System.out.println(tID);
+			urlStream.add(deezerClient.get(tID).getPreview());
 			lengths.add(30);
 		}
 		return (new DeezerModel(titles, urlCover, urlStream, lengths));
