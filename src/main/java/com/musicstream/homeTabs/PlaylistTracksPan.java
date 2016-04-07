@@ -46,6 +46,8 @@ public class PlaylistTracksPan extends JFrame implements ListSelectionListener {
 	private int[] tracksLength;
 	private String[] tracksSource;
 	private Object playlist;
+	private JScrollPane scroll;
+	private String title = "";
 
 	public PlaylistTracksPan(Object playlist) {
 		this.playlist = playlist;
@@ -57,7 +59,7 @@ public class PlaylistTracksPan extends JFrame implements ListSelectionListener {
 		nameList = setNameList();
 		fontLabel = new Font("helvitica", Font.BOLD, 18);
 		imageMap = createImageMap(nameList);
-		streamU = this.getTracksStream();
+		// streamU = this.getTracksStream();
 		tracksLength = this.getTrackLength();
 
 		list = new JList(nameList);
@@ -86,35 +88,21 @@ public class PlaylistTracksPan extends JFrame implements ListSelectionListener {
 		this.add(player);
 	}
 
-	@Override
-	public void valueChanged(ListSelectionEvent e) {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-
-		SwingUtilities.invokeLater(new Runnable() {
-
-			@Override
-			public void run() {
-				int index = list.getSelectedIndex();
-				String source = tracksSource[index];
-				player.setVisible(true);
-				player.getTrackToPlayLength(tracksLength[index], source);
-				player.getTrackToPlay(streamU[index]);
-			}
-		});
-
-	}
-
+	/**
+	 * @param list
+	 * @return : a Map that contains the combination of the playlist name and
+	 *         its picture
+	 */
 	private Map<String, ImageIcon> createImageMap(String[] list) {
 		Map<String, ImageIcon> map = new HashMap<>();
 		if (playlist instanceof Playlist) {
+			this.title = ((Playlist) playlist).getTitle();
+			streamU = this.getTracksStream(playlist);
 			ArrayList<Track> tracks = getPlaylistTracks((Playlist) playlist);
 			for (int i = 0; i < tracks.size(); i++) {
 				try {
 					String url = tracks.get(i).getArtworkUrl();
+
 					map.put(tracks.get(i).getTitle(), new ImageIcon(
 							new URL(url)));
 				} catch (Exception ex) {
@@ -123,10 +111,13 @@ public class PlaylistTracksPan extends JFrame implements ListSelectionListener {
 			}
 		} else {
 			ArrayList<com.zeloon.deezer.domain.Track> tracksDeezer = getPlaylistTracksDeezer((com.zeloon.deezer.domain.Playlist) playlist);
+			streamU = this.getTracksStream(playlist);
 			for (int i = 0; i < tracksDeezer.size(); i++) {
 				try {
 
 					TrackId tID = new TrackId(tracksDeezer.get(i).getId());
+					this.title = ((com.zeloon.deezer.domain.Playlist) playlist)
+							.getTitle();
 					deezerApi.getPreviewTrack(tID);
 					String artworkUrl = tracksDeezer.get(i).getAlbum()
 							.getCover();
@@ -154,36 +145,50 @@ public class PlaylistTracksPan extends JFrame implements ListSelectionListener {
 		return tracks;
 	}
 
+	/**
+	 * @return Array that contains the names of the playlist's tracks
+	 */
 	private String[] setNameList() {
-
+		String[] nameListTemp;
 		if (playlist instanceof Playlist) {
 			ArrayList<Track> tracks = getPlaylistTracks((Playlist) playlist);
-			String[] nameList = new String[tracks.size()];
+			nameListTemp = new String[tracks.size()];
 			for (int i = 0; i < tracks.size(); i++) {
-				nameList[i] = tracks.get(i).getTitle();
+				nameListTemp[i] = tracks.get(i).getTitle();
+				// System.out.println(tracks.get(i).getTitle());
 				tracksSource[i] = "Soundcloud";
 			}
 		} else {
 			ArrayList<com.zeloon.deezer.domain.Track> tracksDeezer = getPlaylistTracksDeezer((com.zeloon.deezer.domain.Playlist) playlist);
-			String[] nameList = new String[tracksDeezer.size()];
+			nameListTemp = new String[tracksDeezer.size()];
 			for (int i = 0; i < tracksDeezer.size(); i++) {
-				nameList[i] = tracksDeezer.get(i).getTitle();
+				nameListTemp[i] = tracksDeezer.get(i).getTitle();
 				tracksSource[i] = "Deezer";
 			}
 		}
 
-		return nameList;
+		return nameListTemp;
 	}
 
+	/**
+	 * @return User's Name
+	 */
 	private String getUserName() {
 		User UserData = soundCApi.getUser();
 		return UserData.getUsername();
 	}
 
-	private String[] getTracksStream() {
-		String[] sc = soundCApi.getStreamUrl();
-		String[] deez = deezerApi.getStreamUrl();
-		return (String[]) ArrayUtils.addAll(sc, deez);
+	/**
+	 * @param playlist
+	 * @return string containing the stream url of the playlis's Tracks
+	 */
+	private String[] getTracksStream(Object playlist) {
+		if (playlist instanceof Playlist) {
+			return (soundCApi.getStreamUrlPlaylist(playlist));
+		} else {
+			return deezerApi.getStreamUrlPlaylist(playlist);
+		}
+
 	}
 
 	private int[] getTrackLength() {
@@ -192,6 +197,10 @@ public class PlaylistTracksPan extends JFrame implements ListSelectionListener {
 		return (int[]) ArrayUtils.addAll(sc, deez);
 	}
 
+	/**
+	 * @author Malek JList Renderer
+	 * 
+	 */
 	private class tracksListRenderer extends DefaultListCellRenderer {
 
 		Font font = new Font("helvitica", Font.BOLD, 24);
@@ -209,4 +218,24 @@ public class PlaylistTracksPan extends JFrame implements ListSelectionListener {
 		}
 	}
 
+	@Override
+	public void valueChanged(ListSelectionEvent arg0) {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+		SwingUtilities.invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				int index = list.getSelectedIndex();
+				String source = tracksSource[index];
+				player.setVisible(true);
+				player.getTrackToPlayLength(tracksLength[index], source);
+				player.getTrackToPlay(streamU[index]);
+			}
+		});
+	}
 }
