@@ -56,7 +56,7 @@ public class SearchPan extends JPanel implements ActionListener,
 	private String title;
 	private String[] tracksSource;
 	private JsonReader jsonReader;
-	private JSONObject jsonSC, jsonDZ;
+	private JSONObject jsonSC, jsonDZ, jsonSCStream, jsonDZStream;
 
 	public SearchPan() {
 		appU = new AppUtils();
@@ -138,6 +138,18 @@ public class SearchPan extends JPanel implements ActionListener,
 		list.setListData(nameList);
 		list.setCellRenderer(new SearchTrack());
 		scroll.setVisible(true);
+
+		try {
+			jsonSCStream = jsonReader
+					.readJsonFromUrl("http://localhost:8080/scsearchtracksstream?search="
+							+ title);
+			jsonDZStream = jsonReader
+					.readJsonFromUrl("http://localhost:8080/dzsearchtracksstream?search="
+							+ title);
+		} catch (IOException | JSONException ex) {
+			// TODO Auto-generated catch block
+			ex.printStackTrace();
+		}
 		try {
 			tracksLength = this.getTrackLength();
 		} catch (JSONException e1) {
@@ -190,8 +202,8 @@ public class SearchPan extends JPanel implements ActionListener,
 		// ArrayList<com.zeloon.deezer.domain.Track>();
 		// tracks = getSearchResult(title);
 		// tracksDeezer = getSearchResultDeezer(title);
-		int nbSc = ((int[]) (jsonSC.get("length"))).length;
-		int nbDz = ((int[]) (jsonDZ.get("length"))).length;
+		int nbSc = ((int[]) (jsonSC.get("title"))).length;
+		int nbDz = ((int[]) (jsonDZ.get("title"))).length;
 		String artworkUrl;
 		for (int i = 0; i < nbSc; i++) {
 			try {
@@ -248,8 +260,8 @@ public class SearchPan extends JPanel implements ActionListener,
 		// ArrayList<Track> tracks = getSearchResult(title);
 		// ArrayList<com.zeloon.deezer.domain.Track> tracksDeezer =
 		// getSearchResultDeezer(title);
-		int nbSc = ((int[]) (jsonSC.get("length"))).length;
-		int nbDz = ((int[]) (jsonDZ.get("length"))).length;
+		int nbSc = ((int[]) (jsonSC.get("title"))).length;
+		int nbDz = ((int[]) (jsonDZ.get("title"))).length;
 		String[] nameList = new String[nbSc + nbDz];
 		for (int i = 0; i < nbSc; i++) {
 			nameList[i] = ((String[]) jsonSC.get("title"))[i];
@@ -267,14 +279,14 @@ public class SearchPan extends JPanel implements ActionListener,
 	 * @throws JSONException
 	 */
 	private String[] getTracksStream() throws JSONException {
-		String[] sc = (String[]) (jsonSC.get("urlStream"));
-		String[] deez = (String[]) (jsonDZ.get("urlStream"));
+		String[] sc = (String[]) (jsonSCStream.get("urlStream"));
+		String[] deez = (String[]) (jsonDZStream.get("urlStream"));
 		return (String[]) ArrayUtils.addAll(sc, deez);
 	}
 
 	private int[] getTrackLength() throws JSONException {
-		int[] sc = (int[]) (jsonSC.get("length"));
-		int[] deez = (int[]) (jsonDZ.get("length"));
+		int[] sc = (int[]) (jsonSCStream.get("length"));
+		int[] deez = (int[]) (jsonDZStream.get("length"));
 		return (int[]) ArrayUtils.addAll(sc, deez);
 	}
 
