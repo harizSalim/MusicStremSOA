@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,14 +24,9 @@ import org.apache.commons.lang.ArrayUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.musicstream.api.DeezerApi;
 import com.musicstream.player.MusicPlayer;
 import com.musicstream.utils.AppUtils;
 import com.musicstream.utils.JsonReader;
-import com.zeloon.deezer.domain.internal.TrackId;
-
-import de.voidplus.soundcloud.Track;
-import de.voidplus.soundcloud.User;
 
 /**
  * @author Malek Jpanel that contains the list of user's tracks
@@ -41,7 +35,7 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 	private final Map<String, ImageIcon> imageMap;
 	public AppUtils appU;
 	// private SoundCloudApi soundCApi;
-	private DeezerApi deezerApi;
+	// private DeezerApi deezerApi;
 	private MusicPlayer player;
 	private Font fontLabel;
 	private JList list;
@@ -50,7 +44,7 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 	private int[] tracksLength;
 	private String[] tracksSource;
 	private JsonReader jsonReader;
-	private JSONObject jsonSC;
+	private JSONObject jsonSC, jsonDZ;
 
 	public TraksPan() throws JSONException {
 		appU = new AppUtils();
@@ -59,12 +53,14 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 		try {
 			jsonSC = jsonReader
 					.readJsonFromUrl("http://localhost:8080/scusertracks");
+			jsonDZ = jsonReader
+					.readJsonFromUrl("http://localhost:8080/dzusertracks");
 		} catch (IOException | JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		// soundCApi = new SoundCloudApi();
-		deezerApi = new DeezerApi();
+		// deezerApi = new DeezerApi();
 		player = new MusicPlayer();
 		nameList = setNameList();
 		fontLabel = new Font("helvitica", Font.BOLD, 18);
@@ -122,13 +118,16 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 	 * @param list
 	 * @return a Map that contains the combination of the track name and it
 	 *         respective picture
-	 * @throws JSONException 
+	 * @throws JSONException
 	 */
-	private Map<String, ImageIcon> createImageMap(String[] list) throws JSONException {
+	private Map<String, ImageIcon> createImageMap(String[] list)
+			throws JSONException {
 		Map<String, ImageIcon> map = new HashMap<>();
 		// ArrayList<Track> tracks = getUserTracks();
 		int nbSc = ((int[]) (jsonSC.get("length"))).length;
-		ArrayList<com.zeloon.deezer.domain.Track> tracksDeezer = getUserTracksDeezer();
+		int nbDz = ((int[]) (jsonDZ.get("length"))).length;
+		// ArrayList<com.zeloon.deezer.domain.Track> tracksDeezer =
+		// getUserTracksDeezer();
 		for (int i = 0; i < nbSc; i++) {
 			try {
 				String url = ((String[]) jsonSC.get("urlCover"))[i];
@@ -138,14 +137,14 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 				ex.printStackTrace();
 			}
 		}
-		for (int i = 0; i < tracksDeezer.size(); i++) {
+		for (int i = 0; i < nbDz; i++) {
 			try {
 
-				TrackId tID = new TrackId(tracksDeezer.get(i).getId());
-				deezerApi.getPreviewTrack(tID);
-				String artworkUrl = tracksDeezer.get(i).getAlbum().getCover();
+				// TrackId tID = new TrackId(tracksDeezer.get(i).getId());
+				// deezerApi.getPreviewTrack(tID);
+				String artworkUrl = ((String[]) jsonDZ.get("urlCover"))[i];
 				URL url = new URL(artworkUrl);
-				map.put(tracksDeezer.get(i).getTitle(), new ImageIcon(url));
+				map.put(((String[]) jsonDZ.get("title"))[i], new ImageIcon(url));
 
 			} catch (Exception ex) {
 				// ex.printStackTrace();
@@ -163,11 +162,11 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 	 * ArrayList<Track> tracks = soundCApi.getTracksByUser(); return tracks; }
 	 */
 
-	private ArrayList<com.zeloon.deezer.domain.Track> getUserTracksDeezer() {
-		ArrayList<com.zeloon.deezer.domain.Track> tracks = deezerApi
-				.getTracksByUser();
-		return tracks;
-	}
+	/*
+	 * private ArrayList<com.zeloon.deezer.domain.Track> getUserTracksDeezer() {
+	 * ArrayList<com.zeloon.deezer.domain.Track> tracks = deezerApi
+	 * .getTracksByUser(); return tracks; }
+	 */
 
 	/**
 	 * @return Array that contains the names of the tracks to be associated with
@@ -178,14 +177,16 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 
 		// ArrayList<Track> tracks = getUserTracks();
 		int nbSc = ((int[]) (jsonSC.get("length"))).length;
-		ArrayList<com.zeloon.deezer.domain.Track> tracksDeezer = getUserTracksDeezer();
-		String[] nameList = new String[nbSc + tracksDeezer.size()];
+		int nbDz = ((int[]) (jsonDZ.get("length"))).length;
+		// ArrayList<com.zeloon.deezer.domain.Track> tracksDeezer =
+		// getUserTracksDeezer();
+		String[] nameList = new String[nbSc + nbDz];
 		for (int i = 0; i < nbSc; i++) {
 			nameList[i] = ((String[]) jsonSC.get("title"))[i];
 			tracksSource[i] = "Soundcloud";
 		}
-		for (int i = 0; i < tracksDeezer.size(); i++) {
-			nameList[i + nbSc] = tracksDeezer.get(i).getTitle();
+		for (int i = 0; i < nbDz; i++) {
+			nameList[i + nbSc] = ((String[]) jsonDZ.get("title"))[i];
 			tracksSource[i + nbSc] = "Deezer";
 		}
 		return nameList;
@@ -219,26 +220,6 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 				player.getTrackToPlay(streamU[index]);
 			}
 		});
-
-		// if (currentThreadId == 0) { // CHeck if it the first Thread to be
-		// created
-		// player.setVisible(true);
-		// player.getTrackToPlay(streamU[list.getSelectedIndex()]);
-
-		/*
-		 * t = new Thread(new Runnable() { public void run() {
-		 * appU.readAudioFeed(streamU[list.getSelectedIndex()]); }
-		 * 
-		 * }); t.start(); } else { // If it is not the first Thread created, we
-		 * stop the first one // and start a new Thread to listen to the
-		 * selected Song (To // Avoid playing all the songs Simultaneously)
-		 * t.stop(); t = new Thread(new Runnable() { public void run() {
-		 * appU.readAudioFeed(streamU[list.getSelectedIndex()]); //
-		 * currentThreadId=t.currentThread().getId(); } }); t.start();
-		 */
-		// }
-		// currentThreadId++;
-
 	}
 
 	/**
@@ -247,13 +228,13 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 	 */
 	private String[] getTracksStream() throws JSONException {
 		String[] sc = (String[]) (jsonSC.get("urlStream"));
-		String[] deez = deezerApi.getStreamUrl();
+		String[] deez = (String[]) (jsonDZ.get("urlStream"));
 		return (String[]) ArrayUtils.addAll(sc, deez);
 	}
 
 	private int[] getTrackLength() throws JSONException {
 		int[] sc = (int[]) (jsonSC.get("length"));
-		int[] deez = deezerApi.getLength();
+		int[] deez = (int[]) (jsonDZ.get("length"));
 		return (int[]) ArrayUtils.addAll(sc, deez);
 	}
 }
