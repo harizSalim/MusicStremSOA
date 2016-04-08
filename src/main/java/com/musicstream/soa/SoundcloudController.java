@@ -26,7 +26,8 @@ public class SoundcloudController implements ErrorController {
 			titles.add(soundcloud.getMeFavorites().get(i).getTitle());
 			urlCover.add(soundcloud.getMeFavorites().get(i).getArtworkUrl());
 		}
-		return (new SoundcloudModel(soundcloud.getMe().getUsername(), titles, urlCover, null, null));
+		return (new SoundcloudModel(soundcloud.getMe().getUsername(), titles,
+				urlCover, null, null));
 	}
 
 	@RequestMapping("/scusertracksstream")
@@ -45,7 +46,7 @@ public class SoundcloudController implements ErrorController {
 			@RequestParam(value = "search") String search) {
 		ArrayList<String> titles = new ArrayList<>();
 		ArrayList<String> urlCover = new ArrayList<>();
-		for (int i = 0; i < soundcloud.findTrack(search).size(); i++) {
+		for (int i = 0; i < 7; i++) {
 			titles.add(soundcloud.findTrack(search).get(i).getTitle());
 			urlCover.add(soundcloud.findTrack(search).get(i).getArtworkUrl());
 		}
@@ -58,7 +59,7 @@ public class SoundcloudController implements ErrorController {
 			@RequestParam(value = "search") String search) {
 		ArrayList<String> urlStream = new ArrayList<>();
 		ArrayList<Integer> lengths = new ArrayList<>();
-		for (int i = 0; i < soundcloud.findTrack(search).size(); i++) {
+		for (int i = 0; i < 7; i++) {
 			urlStream.add(soundcloud.findTrack(search).get(i).getStreamUrl());
 			lengths.add(soundcloud.findTrack(search).get(i).getDuration());
 		}
