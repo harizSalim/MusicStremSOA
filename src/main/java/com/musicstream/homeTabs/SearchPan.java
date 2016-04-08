@@ -121,24 +121,13 @@ public class SearchPan extends JPanel implements ActionListener,
 			jsonDZ = jsonReader
 					.readJsonFromUrl("http://localhost:8080/dzsearchtracks?search="
 							+ title);
-		} catch (IOException | JSONException ex) {
+			nameList = null;
+			imageMap = null;
+			nameList = setNameList(title);
+			imageMap = createImageMap(title);
+		} catch (JSONException | IOException ex) {
 			// TODO Auto-generated catch block
 			ex.printStackTrace();
-		}
-		nameList = null;
-		imageMap = null;
-
-		try {
-			nameList = setNameList(title);
-		} catch (JSONException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
-		try {
-			imageMap = createImageMap(title);
-		} catch (MalformedURLException | JSONException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
 		}
 
 		list.setListData(nameList);
@@ -309,11 +298,11 @@ public class SearchPan extends JPanel implements ActionListener,
 
 			@Override
 			public void run() {
+				int index = list.getSelectedIndex();
+				String source = tracksSource[index];
 				player.setVisible(true);
-				String source = tracksSource[list.getSelectedIndex()];
-				player.getTrackToPlayLength(
-						tracksLength[list.getSelectedIndex()], source);
-				player.getTrackToPlay(streamU[list.getSelectedIndex()]);
+				player.getTrackToPlayLength(tracksLength[index], source);
+				player.getTrackToPlay(streamU[index]);
 			}
 		});
 	}

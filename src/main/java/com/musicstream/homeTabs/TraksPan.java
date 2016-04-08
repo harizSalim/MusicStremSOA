@@ -168,21 +168,6 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 	}
 
 	/**
-	 * @return User's Tracks
-	 */
-	/*
-	 * private ArrayList<Track> getUserTracks() {
-	 * 
-	 * ArrayList<Track> tracks = soundCApi.getTracksByUser(); return tracks; }
-	 */
-
-	/*
-	 * private ArrayList<com.zeloon.deezer.domain.Track> getUserTracksDeezer() {
-	 * ArrayList<com.zeloon.deezer.domain.Track> tracks = deezerApi
-	 * .getTracksByUser(); return tracks; }
-	 */
-
-	/**
 	 * @return Array that contains the names of the tracks to be associated with
 	 *         their images and to be displayed in the JList
 	 * @throws JSONException
