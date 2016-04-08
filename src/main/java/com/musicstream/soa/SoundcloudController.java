@@ -46,9 +46,12 @@ public class SoundcloudController implements ErrorController {
 			@RequestParam(value = "search") String search) {
 		ArrayList<String> titles = new ArrayList<>();
 		ArrayList<String> urlCover = new ArrayList<>();
-		for (int i = 0; i < 7; i++) {
-			titles.add(soundcloud.findTrack(search).get(i).getTitle());
-			urlCover.add(soundcloud.findTrack(search).get(i).getArtworkUrl());
+		if (soundcloud.findTrack(search).size() > 0) {
+			for (int i = 0; i < 7; i++) {
+				titles.add(soundcloud.findTrack(search).get(i).getTitle());
+				urlCover.add(soundcloud.findTrack(search).get(i)
+						.getArtworkUrl());
+			}
 		}
 		return (new SoundcloudModel(soundcloud.getMe().getUsername(), titles,
 				urlCover, null, null));

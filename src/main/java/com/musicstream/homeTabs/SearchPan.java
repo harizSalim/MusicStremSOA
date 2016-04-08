@@ -152,22 +152,13 @@ public class SearchPan extends JPanel implements ActionListener,
 			jsonDZStream = jsonReader
 					.readJsonFromUrl("http://localhost:8080/dzsearchtracksstream?search="
 							+ title);
+			streamU = this.getTracksStream();
+			tracksLength = this.getTrackLength();
 		} catch (IOException | JSONException ex) {
 			// TODO Auto-generated catch block
 			ex.printStackTrace();
 		}
-		try {
-			tracksLength = this.getTrackLength();
-		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		try {
-			streamU = this.getTracksStream();
-		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+
 		// tracks = this.getTracks();
 	}
 
