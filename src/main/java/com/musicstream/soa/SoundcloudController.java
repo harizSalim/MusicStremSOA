@@ -26,8 +26,7 @@ public class SoundcloudController implements ErrorController {
 			titles.add(soundcloud.getMeFavorites().get(i).getTitle());
 			urlCover.add(soundcloud.getMeFavorites().get(i).getArtworkUrl());
 		}
-		return (new SoundcloudModel(soundcloud.getMe().getFullName(), titles,
-				urlCover, null, null));
+		return (new SoundcloudModel(soundcloud.getMe().getUsername(), titles, urlCover, null, null));
 	}
 
 	@RequestMapping("/scusertracksstream")
@@ -50,7 +49,7 @@ public class SoundcloudController implements ErrorController {
 			titles.add(soundcloud.findTrack(search).get(i).getTitle());
 			urlCover.add(soundcloud.findTrack(search).get(i).getArtworkUrl());
 		}
-		return (new SoundcloudModel(soundcloud.getMe().getFullName(), titles,
+		return (new SoundcloudModel(soundcloud.getMe().getUsername(), titles,
 				urlCover, null, null));
 	}
 
@@ -76,7 +75,7 @@ public class SoundcloudController implements ErrorController {
 			titles.add(soundcloud.getMePlaylists().get(i).getTitle());
 			urlCover.add(soundcloud.getMePlaylists().get(i).getArtworkUrl());
 		}
-		return (new SoundcloudModel(soundcloud.getMe().getFullName(), titles,
+		return (new SoundcloudModel(soundcloud.getMe().getUsername(), titles,
 				urlCover));
 	}
 

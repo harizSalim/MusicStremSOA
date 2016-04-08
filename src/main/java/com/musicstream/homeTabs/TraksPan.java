@@ -214,13 +214,10 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 	 */
 	private String getUserName() throws JSONException {
 		String username = "";
-		org.json.JSONArray sc, dz;
-		sc = (org.json.JSONArray) jsonSC.get("name");
-		dz = (org.json.JSONArray) jsonDZ.get("name");
-		if (sc.getString(0) != null)
-			username = username + sc.getString(0) + "(Soundcloud)";
-		if (dz.getString(0) != null)
-			username = username + dz.getString(0) + "(Deezer)";
+		if (jsonSC.getString("name") != null)
+			username = username + jsonSC.getString("name") + "(Soundcloud)";
+		if (jsonDZ.getString("name") != null)
+			username = username + jsonDZ.getString("name") + "(Deezer)";
 		return username;
 	}
 
