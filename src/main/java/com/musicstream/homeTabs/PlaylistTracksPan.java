@@ -66,7 +66,7 @@ public class PlaylistTracksPan extends JFrame implements ListSelectionListener {
 		list.setCellRenderer(new tracksListRenderer());
 		list.addListSelectionListener(this);
 
-		JScrollPane scroll = new JScrollPane(list);
+		scroll = new JScrollPane(list);
 		scroll.setPreferredSize(new Dimension(appU.getScreenWidth() - 60, appU
 				.getScreenHeight() - 60));
 		scroll.setBounds(10, 50, appU.getScreenWidth() - 40,
