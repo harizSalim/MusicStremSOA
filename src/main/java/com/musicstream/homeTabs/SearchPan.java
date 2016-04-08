@@ -244,22 +244,6 @@ public class SearchPan extends JPanel implements ActionListener,
 
 	/**
 	 * @param title
-	 * @return the research results
-	 */
-	/*
-	 * public ArrayList<Track> getSearchResult(String title) {
-	 * 
-	 * ArrayList<Track> tracks = new ArrayList<Track>(); tracks =
-	 * soundCApi.getTrack(title); return tracks; }
-	 * 
-	 * public ArrayList<com.zeloon.deezer.domain.Track> getSearchResultDeezer(
-	 * String title) { ArrayList<com.zeloon.deezer.domain.Track> tracks = new
-	 * ArrayList<com.zeloon.deezer.domain.Track>(); tracks =
-	 * deezerApi.getTrack(title); return tracks; }
-	 */
-
-	/**
-	 * @param title
 	 * @return Array that contains the names of the tracks to be associated with
 	 *         their images and to be displayed in the JList
 	 * @throws JSONException
