@@ -27,33 +27,32 @@ public class DeezerController implements ErrorController {
 	public DeezerModel userTracks() {
 		ArrayList<String> titles = new ArrayList<>();
 		ArrayList<String> urlCover = new ArrayList<>();
-		ArrayList<String> urlStream = new ArrayList<>();
-		ArrayList<Integer> lengths = new ArrayList<>();
 		for (int i = 0; i < deezerClient.getTracks(uID).getData().size(); i++) {
 			titles.add(deezerClient.getTracks(uID).getData().get(i).getTitle());
 			urlCover.add(deezerClient.getTracks(uID).getData().get(i)
 					.getAlbum().getCover());
-			// urlStream.add(deezerClient.getTracks(uID).getData().get(i).getPreview());
-			// lengths.add(30);
 		}
-		return (new DeezerModel(titles, urlCover, urlStream, lengths));
+		return (new DeezerModel(deezerClient.get(uID).getName(), titles,
+				urlCover, null, null));
 	}
 
 	@RequestMapping("/dzusertracksstream")
 	public DeezerModel userTracksStream() {
-		ArrayList<String> titles = new ArrayList<>();
-		ArrayList<String> urlCover = new ArrayList<>();
 		ArrayList<String> urlStream = new ArrayList<>();
 		ArrayList<Integer> lengths = new ArrayList<>();
 		for (int i = 0; i < deezerClient.getTracks(uID).getData().size(); i++) {
-			// titles.add(deezerClient.getTracks(uID).getData().get(i).getTitle());
-			// urlCover.add(deezerClient.getTracks(uID).getData().get(i).getAlbum().getCover());
 			TrackId tID = new TrackId(deezerClient.getTracks(uID).getData()
 					.get(i).getId());
 			urlStream.add(deezerClient.get(tID).getPreview());
 			lengths.add(30);
 		}
-		return (new DeezerModel(titles, urlCover, urlStream, lengths));
+		return (new DeezerModel(null, null, null, urlStream, lengths));
+	}
+
+	@RequestMapping("/dzsearchusername")
+	public SoundcloudModel userName() {
+		return (new SoundcloudModel(deezerClient.get(uID).getName(), null,
+				null, null, null));
 	}
 
 	@RequestMapping("/dzsearchtracks")
@@ -62,34 +61,27 @@ public class DeezerController implements ErrorController {
 		Search querry = new Search(search, SearchOrder.RANKING);
 		ArrayList<String> titles = new ArrayList<>();
 		ArrayList<String> urlCover = new ArrayList<>();
-		ArrayList<String> urlStream = new ArrayList<>();
-		ArrayList<Integer> lengths = new ArrayList<>();
 		for (int i = 0; i < deezerClient.search(querry).getData().size(); i++) {
 			titles.add(deezerClient.search(querry).getData().get(i).getTitle());
 			urlCover.add(deezerClient.search(querry).getData().get(i)
 					.getAlbum().getCover());
-			// urlStream.add(deezerClient.search(querry).getData().get(i).getPreview());
-			// lengths.add(30);
 		}
-		return (new DeezerModel(titles, urlCover, urlStream, lengths));
+		return (new DeezerModel(deezerClient.get(uID).getName(), titles,
+				urlCover, null, null));
 	}
 
 	@RequestMapping("/dzsearchtracksstream")
 	public DeezerModel searchTracksStream(
 			@RequestParam(value = "search") String search) {
 		Search querry = new Search(search, SearchOrder.RANKING);
-		ArrayList<String> titles = new ArrayList<>();
-		ArrayList<String> urlCover = new ArrayList<>();
 		ArrayList<String> urlStream = new ArrayList<>();
 		ArrayList<Integer> lengths = new ArrayList<>();
 		for (int i = 0; i < deezerClient.search(querry).getData().size(); i++) {
-			// titles.add(deezerClient.search(querry).getData().get(i).getTitle());
-			// urlCover.add(deezerClient.search(querry).getData().get(i).getAlbum().getCover());
 			urlStream.add(deezerClient.search(querry).getData().get(i)
 					.getPreview());
 			lengths.add(30);
 		}
-		return (new DeezerModel(titles, urlCover, urlStream, lengths));
+		return (new DeezerModel(null, null, null, urlStream, lengths));
 	}
 
 	@RequestMapping("/dzuserplaylists")
@@ -102,7 +94,8 @@ public class DeezerController implements ErrorController {
 			urlCover.add(deezerClient.getPlaylists(uID).getData().get(i)
 					.getPicture());
 		}
-		return (new DeezerModel(titles, urlCover));
+		return (new DeezerModel(deezerClient.get(uID).getName(), titles,
+				urlCover));
 	}
 
 	@RequestMapping(value = PATH)
