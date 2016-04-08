@@ -41,12 +41,6 @@ public class SoundcloudController implements ErrorController {
 		return (new SoundcloudModel(null, null, null, urlStream, lengths));
 	}
 
-	@RequestMapping("/scsearchusername")
-	public SoundcloudModel userName() {
-		return (new SoundcloudModel(soundcloud.getMe().getFullName(), null,
-				null, null, null));
-	}
-
 	@RequestMapping("/scsearchtracks")
 	public SoundcloudModel searchTracks(
 			@RequestParam(value = "search") String search) {

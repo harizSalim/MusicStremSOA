@@ -49,12 +49,6 @@ public class DeezerController implements ErrorController {
 		return (new DeezerModel(null, null, null, urlStream, lengths));
 	}
 
-	@RequestMapping("/dzsearchusername")
-	public SoundcloudModel userName() {
-		return (new SoundcloudModel(deezerClient.get(uID).getName(), null,
-				null, null, null));
-	}
-
 	@RequestMapping("/dzsearchtracks")
 	public DeezerModel searchTracks(
 			@RequestParam(value = "search") String search) {

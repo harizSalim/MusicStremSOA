@@ -52,8 +52,10 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 		tracksSource = new String[100];
 		jsonReader = new JsonReader();
 		try {
-			jsonSC = jsonReader.readJsonFromUrl("http://localhost:8080/scusertracks");
-			jsonDZ = jsonReader.readJsonFromUrl("http://localhost:8080/dzusertracks");
+			jsonSC = jsonReader
+					.readJsonFromUrl("http://localhost:8080/scusertracks");
+			jsonDZ = jsonReader
+					.readJsonFromUrl("http://localhost:8080/dzusertracks");
 		} catch (IOException | JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -66,8 +68,10 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 		imageMap = createImageMap(nameList);
 
 		try {
-			jsonSCStream = jsonReader.readJsonFromUrl("http://localhost:8080/scusertracksstream");
-			jsonDZStream = jsonReader.readJsonFromUrl("http://localhost:8080/dzusertracksstream");
+			jsonSCStream = jsonReader
+					.readJsonFromUrl("http://localhost:8080/scusertracksstream");
+			jsonDZStream = jsonReader
+					.readJsonFromUrl("http://localhost:8080/dzusertracksstream");
 		} catch (IOException | JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -80,14 +84,17 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 		list.addListSelectionListener(this);
 
 		JScrollPane scroll = new JScrollPane(list);
-		scroll.setPreferredSize(new Dimension(appU.getScreenWidth() - 60, appU.getScreenHeight() - 60));
-		scroll.setBounds(10, 50, appU.getScreenWidth() - 40, appU.getScreenHeight() - 180);
+		scroll.setPreferredSize(new Dimension(appU.getScreenWidth() - 60, appU
+				.getScreenHeight() - 60));
+		scroll.setBounds(10, 50, appU.getScreenWidth() - 40,
+				appU.getScreenHeight() - 180);
 
-		JLabel label = new JLabel("Welcome : "/* + getUserName() */);
+		JLabel label = new JLabel("Welcome : " + getUserName());
 		label.setBounds(10, -15, 250, 75);
 		label.setFont(fontLabel);
 
-		player.setBounds(10, appU.getScreenHeight() - 150, appU.getScreenWidth() - 40, 80);
+		player.setBounds(10, appU.getScreenHeight() - 150,
+				appU.getScreenWidth() - 40, 80);
 		player.setVisible(false);
 		BorderLayout layout = new BorderLayout();
 		this.setLayout(layout);
@@ -106,10 +113,11 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 		Font font = new Font("helvitica", Font.BOLD, 24);
 
 		@Override
-		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
-				boolean cellHasFocus) {
+		public Component getListCellRendererComponent(JList list, Object value,
+				int index, boolean isSelected, boolean cellHasFocus) {
 
-			JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+			JLabel label = (JLabel) super.getListCellRendererComponent(list,
+					value, index, isSelected, cellHasFocus);
 			label.setIcon(imageMap.get(value));
 			label.setHorizontalTextPosition(SwingConstants.RIGHT);
 			label.setFont(font);
@@ -123,7 +131,8 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 	 *         respective picture
 	 * @throws JSONException
 	 */
-	private Map<String, ImageIcon> createImageMap(String[] list) throws JSONException {
+	private Map<String, ImageIcon> createImageMap(String[] list)
+			throws JSONException {
 		Map<String, ImageIcon> map = new HashMap<>();
 		org.json.JSONArray sc, dz, scCover, dzCover;
 		sc = (org.json.JSONArray) jsonSC.get("title");
@@ -203,10 +212,14 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 	/**
 	 * @return User's User name to be displayed
 	 */
-	/*
-	 * private String getUserName() { User UserData = soundCApi.getUser();
-	 * return UserData.getUsername(); }
-	 */
+	private String getUserName() throws JSONException {
+		String username = "";
+		if (jsonSC.getString("name") != null)
+			username = username + jsonSC.getString("name") + "(Soundcloud)";
+		if (jsonDZ.getString("name") != null)
+			username = username + jsonDZ.getString("name") + "(Deezer)";
+		return username;
+	}
 
 	@Override
 	public void valueChanged(ListSelectionEvent arg0) {

@@ -50,8 +50,10 @@ public class PlaylistsPan extends JPanel implements ListSelectionListener {
 		deezerApi = new DeezerApi();
 		jsonReader = new JsonReader();
 		try {
-			jsonSC = jsonReader.readJsonFromUrl("http://localhost:8080/scuserplaylists");
-			jsonDZ = jsonReader.readJsonFromUrl("http://localhost:8080/dzuserplaylists");
+			jsonSC = jsonReader
+					.readJsonFromUrl("http://localhost:8080/scuserplaylists");
+			jsonDZ = jsonReader
+					.readJsonFromUrl("http://localhost:8080/dzuserplaylists");
 		} catch (IOException | JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -66,10 +68,12 @@ public class PlaylistsPan extends JPanel implements ListSelectionListener {
 		list.addListSelectionListener(this);
 
 		JScrollPane scroll = new JScrollPane(list);
-		scroll.setPreferredSize(new Dimension(appU.getScreenWidth() - 30, appU.getScreenHeight() - 30));
-		scroll.setBounds(10, 50, appU.getScreenWidth() - 30, appU.getScreenHeight() - 180);
+		scroll.setPreferredSize(new Dimension(appU.getScreenWidth() - 30, appU
+				.getScreenHeight() - 30));
+		scroll.setBounds(10, 50, appU.getScreenWidth() - 30,
+				appU.getScreenHeight() - 180);
 
-		JLabel label = new JLabel("Welcome : " /* + getUserName() */);
+		JLabel label = new JLabel("Welcome : " + getUserName());
 		label.setFont(fontLabel);
 		label.setBounds(10, -15, 250, 75);
 
@@ -87,10 +91,11 @@ public class PlaylistsPan extends JPanel implements ListSelectionListener {
 		Font font = new Font("helvitica", Font.BOLD, 24);
 
 		@Override
-		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
-				boolean cellHasFocus) {
+		public Component getListCellRendererComponent(JList list, Object value,
+				int index, boolean isSelected, boolean cellHasFocus) {
 
-			JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+			JLabel label = (JLabel) super.getListCellRendererComponent(list,
+					value, index, isSelected, cellHasFocus);
 			label.setIcon(imageMap.get(value));
 			label.setHorizontalTextPosition(SwingConstants.RIGHT);
 			label.setFont(font);
@@ -105,7 +110,8 @@ public class PlaylistsPan extends JPanel implements ListSelectionListener {
 	 *         respective picture
 	 * @throws JSONException
 	 */
-	private Map<String, ImageIcon> createImageMap(String[] list) throws JSONException {
+	private Map<String, ImageIcon> createImageMap(String[] list)
+			throws JSONException {
 		Map<String, ImageIcon> map = new HashMap<>();
 
 		org.json.JSONArray sc, dz, scCover, dzCover;
@@ -148,7 +154,8 @@ public class PlaylistsPan extends JPanel implements ListSelectionListener {
 	}
 
 	private ArrayList<com.zeloon.deezer.domain.Playlist> getUserPlaylistsDeezer() {
-		ArrayList<com.zeloon.deezer.domain.Playlist> playlistsDeezer = deezerApi.getPlaylistByUser();
+		ArrayList<com.zeloon.deezer.domain.Playlist> playlistsDeezer = deezerApi
+				.getPlaylistByUser();
 		return playlistsDeezer;
 	}
 
@@ -181,7 +188,8 @@ public class PlaylistsPan extends JPanel implements ListSelectionListener {
 	private Object[] setPlaylists() {
 		ArrayList<Playlist> playlists = getUserPlaylists();
 		ArrayList<com.zeloon.deezer.domain.Playlist> playlistsDeezer = getUserPlaylistsDeezer();
-		Object[] playList = new Object[playlists.size() + playlistsDeezer.size()];
+		Object[] playList = new Object[playlists.size()
+				+ playlistsDeezer.size()];
 		for (int i = 0; i < playlists.size(); i++) {
 			playList[i] = playlists.get(i);
 		}
@@ -194,10 +202,14 @@ public class PlaylistsPan extends JPanel implements ListSelectionListener {
 	/**
 	 * @return User's User name to be displayed
 	 */
-	/*
-	 * private String getUserName() { User UserData = soundCApi.getUser();
-	 * return UserData.getUsername(); }
-	 */
+	private String getUserName() throws JSONException {
+		String username = "";
+		if (jsonSC.getString("name") != null)
+			username = username + jsonSC.getString("name") + "(Soundcloud)";
+		if (jsonDZ.getString("name") != null)
+			username = username + jsonDZ.getString("name") + "(Deezer)";
+		return username;
+	}
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {

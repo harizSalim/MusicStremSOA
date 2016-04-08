@@ -69,7 +69,7 @@ public class SearchPan extends JPanel implements ActionListener,
 		list = new JList();
 		list.addListSelectionListener(this);
 		player = new MusicPlayer();
-		JLabel label = new JLabel("Search Tracks : "/* + getUserName() */);
+		JLabel label = new JLabel("Search Tracks : ");
 		label.setFont(fontLabel);
 		label.setBounds(10, -15, 250, 75);
 
@@ -82,8 +82,8 @@ public class SearchPan extends JPanel implements ActionListener,
 		this.add(scroll);
 		scroll.setVisible(false);
 		textField = new JTextField();
-		 textField.setBounds(700, 5, 350, 200);
-		 textField.setPreferredSize(new Dimension(100,30));
+		textField.setBounds(700, 5, 350, 200);
+		textField.setPreferredSize(new Dimension(100, 30));
 		search = new JButton("Search");
 		search.setBounds(1000, 7, 80, 40);
 		search.addActionListener(this);
