@@ -71,8 +71,9 @@ public class AudioPlayer implements LineListener {
 		String length = "";
 		int hour = 0;
 		int minute = 0;
-
+System.out.println(source);
 		if (source.equals("Soundcloud")) {
+			
 			seconds = (int) TimeUnit.MILLISECONDS.toSeconds(seconds);
 			minute = (int) TimeUnit.MILLISECONDS.toMinutes(seconds);
 			hour = (int) TimeUnit.MILLISECONDS.toHours(seconds);

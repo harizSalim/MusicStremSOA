@@ -62,7 +62,8 @@ public class SoundcloudController implements ErrorController {
 			@RequestParam(value = "search") String search) {
 		ArrayList<String> urlStream = new ArrayList<>();
 		ArrayList<Integer> lengths = new ArrayList<>();
-		for (int i = 0; i < 7; i++) {
+		for (int i = 0; i < 3; i++) {
+			System.out.println(soundcloud.findTrack(search).get(i).getTitle());
 			urlStream.add(soundcloud.findTrack(search).get(i).getStreamUrl());
 			lengths.add(soundcloud.findTrack(search).get(i).getDuration());
 		}
