@@ -58,7 +58,8 @@ public class SearchPan extends JPanel implements ActionListener,
 	private String title;
 	private String[] tracksSource;
 	private JsonReader jsonReader;
-	private JSONObject jsonSC, jsonDZ, jsonSCStream, jsonDZStream;
+	private JSONObject jsonSC, jsonDZ, jsonSP, jsonSCStream, jsonDZStream,
+			jsonSPStream;
 
 	public SearchPan() {
 		appU = new AppUtils();
@@ -121,6 +122,9 @@ public class SearchPan extends JPanel implements ActionListener,
 			jsonDZ = jsonReader
 					.readJsonFromUrl("http://localhost:8080/dzsearchtracks?search="
 							+ title);
+			jsonSP = jsonReader
+					.readJsonFromUrl("http://localhost:8080/spsearchtracks?search="
+							+ title);
 			nameList = null;
 			imageMap = null;
 			nameList = setNameList(title);
@@ -140,6 +144,9 @@ public class SearchPan extends JPanel implements ActionListener,
 							+ title);
 			jsonDZStream = jsonReader
 					.readJsonFromUrl("http://localhost:8080/dzsearchtracksstream?search="
+							+ title);
+			jsonSPStream = jsonReader
+					.readJsonFromUrl("http://localhost:8080/spsearchtracksstream?search="
 							+ title);
 			streamU = this.getTracksStream();
 			tracksLength = this.getTrackLength();
@@ -188,13 +195,16 @@ public class SearchPan extends JPanel implements ActionListener,
 		// ArrayList<com.zeloon.deezer.domain.Track>();
 		// tracks = getSearchResult(title);
 		// tracksDeezer = getSearchResultDeezer(title);
-		org.json.JSONArray sc, dz, scCover, dzCover;
+		org.json.JSONArray sc, dz, sp, scCover, dzCover, spCover;
 		sc = (org.json.JSONArray) jsonSC.get("title");
 		dz = (org.json.JSONArray) jsonDZ.get("title");
+		sp = (org.json.JSONArray) jsonSP.get("title");
 		scCover = (org.json.JSONArray) jsonSC.get("urlCover");
 		dzCover = (org.json.JSONArray) jsonDZ.get("urlCover");
+		spCover = (org.json.JSONArray) jsonSP.get("urlCover");
 		int nbSc = sc.length();
 		int nbDz = dz.length();
+		int nbSp = sp.length();
 		String artworkUrl;
 		for (int i = 0; i < nbSc; i++) {
 			try {
@@ -219,6 +229,18 @@ public class SearchPan extends JPanel implements ActionListener,
 				map.put(dz.getString(i), new ImageIcon(url));
 			}
 		}
+		for (int i = 0; i < nbSp; i++) {
+			try {
+				artworkUrl = spCover.getString(i);
+				URL url = new URL(artworkUrl);
+				map.put(sp.getString(i), new ImageIcon(url));
+			} catch (Exception ex) {
+				// ex.printStackTrace();
+				artworkUrl = "https://yt3.ggpht.com/-b05GwzWbqZE/AAAAAAAAAAI/AAAAAAAAAAA/_d2WA1qZyi8/s100-c-k-no/photo.jpg";
+				URL url = new URL(artworkUrl);
+				map.put(sp.getString(i), new ImageIcon(url));
+			}
+		}
 		return map;
 	}
 
@@ -233,12 +255,14 @@ public class SearchPan extends JPanel implements ActionListener,
 		// ArrayList<Track> tracks = getSearchResult(title);
 		// ArrayList<com.zeloon.deezer.domain.Track> tracksDeezer =
 		// getSearchResultDeezer(title);
-		org.json.JSONArray sc, dz;
+		org.json.JSONArray sc, dz, sp;
 		sc = (org.json.JSONArray) jsonSC.get("title");
 		dz = (org.json.JSONArray) jsonDZ.get("title");
+		sp = (org.json.JSONArray) jsonSP.get("title");
 		int nbSc = sc.length();
 		int nbDz = dz.length();
-		String[] nameList = new String[nbSc + nbDz];
+		int nbSp = sp.length();
+		String[] nameList = new String[nbSc + nbDz + nbSp];
 		for (int i = 0; i < nbSc; i++) {
 			nameList[i] = sc.getString(i);
 			tracksSource[i] = "Soundcloud";
@@ -246,6 +270,10 @@ public class SearchPan extends JPanel implements ActionListener,
 		for (int i = 0; i < nbDz; i++) {
 			nameList[i + nbSc] = dz.getString(i);
 			tracksSource[i + nbSc] = "Deezer";
+		}
+		for (int i = 0; i < nbSp; i++) {
+			nameList[i + nbSc + nbDz] = sp.getString(i);
+			tracksSource[i + nbSc + nbDz] = "Spotify";
 		}
 		return nameList;
 	}
@@ -255,35 +283,47 @@ public class SearchPan extends JPanel implements ActionListener,
 	 * @throws JSONException
 	 */
 	private String[] getTracksStream() throws JSONException {
-		org.json.JSONArray sc, dz;
+		org.json.JSONArray sc, dz, sp;
 
 		sc = (org.json.JSONArray) jsonSCStream.get("urlStream");
 		dz = (org.json.JSONArray) jsonDZStream.get("urlStream");
+		sp = (org.json.JSONArray) jsonSPStream.get("urlStream");
 		String[] scS = new String[sc.length()];
 		String[] dzS = new String[dz.length()];
+		String[] spS = new String[sp.length()];
 		for (int i = 0; i < sc.length(); i++) {
 			scS[i] = sc.getString(i);
 		}
 		for (int i = 0; i < dz.length(); i++) {
 			dzS[i] = dz.getString(i);
 		}
-		return (String[]) ArrayUtils.addAll(scS, dzS);
+		for (int i = 0; i < sp.length(); i++) {
+			spS[i] = sp.getString(i);
+		}
+		return (String[]) ArrayUtils.addAll(
+				(String[]) ArrayUtils.addAll(scS, dzS), spS);
 	}
 
 	private int[] getTrackLength() throws JSONException {
-		org.json.JSONArray sc, dz;
+		org.json.JSONArray sc, dz, sp;
 
 		sc = (org.json.JSONArray) jsonSCStream.get("length");
 		dz = (org.json.JSONArray) jsonDZStream.get("length");
+		sp = (org.json.JSONArray) jsonSPStream.get("length");
 		int[] scS = new int[sc.length()];
 		int[] dzS = new int[dz.length()];
+		int[] spS = new int[sp.length()];
 		for (int i = 0; i < sc.length(); i++) {
 			scS[i] = sc.getInt(i);
 		}
 		for (int i = 0; i < dz.length(); i++) {
 			dzS[i] = dz.getInt(i);
 		}
-		return (int[]) ArrayUtils.addAll(scS, dzS);
+		for (int i = 0; i < sp.length(); i++) {
+			spS[i] = sp.getInt(i);
+		}
+		return (int[]) ArrayUtils.addAll((int[]) ArrayUtils.addAll(scS, dzS),
+				spS);
 	}
 
 	@Override

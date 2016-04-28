@@ -42,7 +42,7 @@ public class PlaylistsPan extends JPanel implements ListSelectionListener {
 	private JList list;
 	Object[] playLists;
 	private JsonReader jsonReader;
-	private JSONObject jsonSC, jsonDZ;
+	private JSONObject jsonSC, jsonDZ, jsonSP;
 
 	public PlaylistsPan() throws JSONException {
 		appU = new AppUtils();
@@ -54,6 +54,8 @@ public class PlaylistsPan extends JPanel implements ListSelectionListener {
 					.readJsonFromUrl("http://localhost:8080/scuserplaylists");
 			jsonDZ = jsonReader
 					.readJsonFromUrl("http://localhost:8080/dzuserplaylists");
+			jsonSP = jsonReader
+					.readJsonFromUrl("http://localhost:8080/spuserplaylists");
 		} catch (IOException | JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -114,13 +116,16 @@ public class PlaylistsPan extends JPanel implements ListSelectionListener {
 			throws JSONException {
 		Map<String, ImageIcon> map = new HashMap<>();
 
-		org.json.JSONArray sc, dz, scCover, dzCover;
+		org.json.JSONArray sc, dz, sp, scCover, dzCover, spCover;
 		sc = (org.json.JSONArray) jsonSC.get("playlistName");
 		dz = (org.json.JSONArray) jsonDZ.get("playlistName");
+		sp = (org.json.JSONArray) jsonSP.get("playlistName");
 		scCover = (org.json.JSONArray) jsonSC.get("playlistUrlCover");
 		dzCover = (org.json.JSONArray) jsonDZ.get("playlistUrlCover");
+		spCover = (org.json.JSONArray) jsonSP.get("playlistUrlCover");
 		int nbSc = sc.length();
 		int nbDz = dz.length();
+		int nbSp = sp.length();
 
 		for (int i = 0; i < nbSc; i++) {
 			try {
@@ -135,6 +140,15 @@ public class PlaylistsPan extends JPanel implements ListSelectionListener {
 				String artworkUrl = dzCover.getString(i);
 				URL url = new URL(artworkUrl);
 				map.put(dz.getString(i), new ImageIcon(url));
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+		for (int i = 0; i < nbSp; i++) {
+			try {
+				String artworkUrl = spCover.getString(i);
+				URL url = new URL(artworkUrl);
+				map.put(sp.getString(i), new ImageIcon(url));
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
@@ -169,18 +183,23 @@ public class PlaylistsPan extends JPanel implements ListSelectionListener {
 		// ArrayList<Playlist> playlists = getUserPlaylists();
 		// ArrayList<com.zeloon.deezer.domain.Playlist> playlistsDeezer =
 		// getUserPlaylistsDeezer();
-		org.json.JSONArray sc, dz;
+		org.json.JSONArray sc, dz, sp;
 		sc = (org.json.JSONArray) jsonSC.get("playlistName");
 		dz = (org.json.JSONArray) jsonDZ.get("playlistName");
+		sp = (org.json.JSONArray) jsonSP.get("playlistName");
 		int nbSc = sc.length();
 		int nbDz = dz.length();
+		int nbSp = sp.length();
 
-		String[] nameList = new String[nbSc + nbDz];
+		String[] nameList = new String[nbSc + nbDz + nbSp];
 		for (int i = 0; i < nbSc; i++) {
 			nameList[i] = sc.getString(i);
 		}
 		for (int i = 0; i < nbDz; i++) {
 			nameList[i + nbSc] = dz.getString(i);
+		}
+		for (int i = 0; i < nbSp; i++) {
+			nameList[i + nbSc + nbDz] = sp.getString(i);
 		}
 		return nameList;
 	}
@@ -208,6 +227,8 @@ public class PlaylistsPan extends JPanel implements ListSelectionListener {
 			username = username + jsonSC.getString("name") + "(Soundcloud)";
 		if (jsonDZ.getString("name") != null)
 			username = username + jsonDZ.getString("name") + "(Deezer)";
+		if (jsonSP.getString("name") != null)
+			username = username + jsonSP.getString("name") + "(Spotify)";
 		return username;
 	}
 
