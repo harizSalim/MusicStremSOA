@@ -41,14 +41,17 @@ public class PlaylistsPan extends JPanel implements ListSelectionListener {
 	Font fontLabel;
 	private JList list;
 	Object[] playLists;
+	private String[] tracksSource;
 	private JsonReader jsonReader;
 	private JSONObject jsonSC, jsonDZ, jsonSP;
+	int nbSc = 0, nbDz = 0, nbSp = 0;
 
 	public PlaylistsPan() throws JSONException {
 		appU = new AppUtils();
 		soundCApi = new SoundCloudApi();
 		deezerApi = new DeezerApi();
 		jsonReader = new JsonReader();
+		tracksSource = new String[100];
 		try {
 			jsonSC = jsonReader
 					.readJsonFromUrl("http://localhost:8080/scuserplaylists");
@@ -187,19 +190,22 @@ public class PlaylistsPan extends JPanel implements ListSelectionListener {
 		sc = (org.json.JSONArray) jsonSC.get("playlistName");
 		dz = (org.json.JSONArray) jsonDZ.get("playlistName");
 		sp = (org.json.JSONArray) jsonSP.get("playlistName");
-		int nbSc = sc.length();
-		int nbDz = dz.length();
-		int nbSp = sp.length();
+		nbSc = sc.length();
+		nbDz = dz.length();
+		nbSp = sp.length();
 
 		String[] nameList = new String[nbSc + nbDz + nbSp];
 		for (int i = 0; i < nbSc; i++) {
 			nameList[i] = sc.getString(i);
+			tracksSource[i] = "Soundcloud";
 		}
 		for (int i = 0; i < nbDz; i++) {
 			nameList[i + nbSc] = dz.getString(i);
+			tracksSource[i + nbSc] = "Deezer";
 		}
 		for (int i = 0; i < nbSp; i++) {
 			nameList[i + nbSc + nbDz] = sp.getString(i);
+			tracksSource[i + nbSc + nbDz] = "Spotify";
 		}
 		return nameList;
 	}
@@ -235,8 +241,25 @@ public class PlaylistsPan extends JPanel implements ListSelectionListener {
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 		if (!e.getValueIsAdjusting()) {
-			Object playlist = playLists[list.getSelectedIndex()];
-			PlaylistTracksPan playlistTracks = new PlaylistTracksPan(playlist);
+			if (tracksSource[list.getSelectedIndex()].equals("Soundcloud")) {
+				int index = list.getSelectedIndex();
+				PlaylistTracksPan playlistTracks = new PlaylistTracksPan(index,
+						"Soundcloud");
+			}
+			if (tracksSource[list.getSelectedIndex()].equals("Deezer")) {
+				int index = list.getSelectedIndex() - nbSc;
+				PlaylistTracksPan playlistTracks = new PlaylistTracksPan(index,
+						"Deezer");
+
+			}
+			if (tracksSource[list.getSelectedIndex()].equals("Spotify")) {
+				int index = list.getSelectedIndex() - nbSc - nbDz;
+				PlaylistTracksPan playlistTracks = new PlaylistTracksPan(index,
+						"Spotify");
+			}
+			// Object playlist = playLists[list.getSelectedIndex()];
+			// PlaylistTracksPan playlistTracks = new
+			// PlaylistTracksPan(playlist);
 		}
 	}
 }

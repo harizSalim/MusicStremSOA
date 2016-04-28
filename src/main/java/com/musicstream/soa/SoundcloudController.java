@@ -84,6 +84,36 @@ public class SoundcloudController implements ErrorController {
 				urlCover));
 	}
 
+	@RequestMapping("/scplaylistinfo")
+	public SoundcloudModel playlistInfo(@RequestParam(value = "index") int index) {
+		ArrayList<String> titles = new ArrayList<>();
+		ArrayList<String> urlCover = new ArrayList<>();
+		for (int i = 0; i < (soundcloud.getMePlaylists().get(index).getTracks())
+				.size(); i++) {
+			titles.add(soundcloud.getMePlaylists().get(index).getTracks()
+					.get(i).getTitle());
+			urlCover.add(soundcloud.getMePlaylists().get(index).getTracks()
+					.get(i).getArtworkUrl());
+		}
+		return (new SoundcloudModel(soundcloud.getMe().getUsername(), titles,
+				urlCover, null, null));
+	}
+
+	@RequestMapping("/scplaylistinfoStream")
+	public SoundcloudModel playlistInfoStream(
+			@RequestParam(value = "index") int index) {
+		ArrayList<String> urlStream = new ArrayList<>();
+		ArrayList<Integer> lengths = new ArrayList<>();
+		for (int i = 0; i < (soundcloud.getMePlaylists().get(index).getTracks())
+				.size(); i++) {
+			urlStream.add(soundcloud.getMePlaylists().get(index).getTracks()
+					.get(i).getStreamUrl());
+			lengths.add(soundcloud.getMePlaylists().get(index).getTracks()
+					.get(i).getDuration());
+		}
+		return (new SoundcloudModel(null, null, null, urlStream, lengths));
+	}
+
 	@RequestMapping(value = PATH)
 	public String error() {
 		return "Error handling SoundCloud";
