@@ -243,19 +243,34 @@ public class PlaylistsPan extends JPanel implements ListSelectionListener {
 		if (!e.getValueIsAdjusting()) {
 			if (tracksSource[list.getSelectedIndex()].equals("Soundcloud")) {
 				int index = list.getSelectedIndex();
-				PlaylistTracksPan playlistTracks = new PlaylistTracksPan(index,
-						"Soundcloud");
+				try {
+					PlaylistTracksPan playlistTracks = new PlaylistTracksPan(
+							index, "Soundcloud");
+				} catch (JSONException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 			if (tracksSource[list.getSelectedIndex()].equals("Deezer")) {
 				int index = list.getSelectedIndex() - nbSc;
-				PlaylistTracksPan playlistTracks = new PlaylistTracksPan(index,
-						"Deezer");
+				try {
+					PlaylistTracksPan playlistTracks = new PlaylistTracksPan(
+							index, "Deezer");
+				} catch (JSONException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 
 			}
 			if (tracksSource[list.getSelectedIndex()].equals("Spotify")) {
 				int index = list.getSelectedIndex() - nbSc - nbDz;
-				PlaylistTracksPan playlistTracks = new PlaylistTracksPan(index,
-						"Spotify");
+				try {
+					PlaylistTracksPan playlistTracks = new PlaylistTracksPan(
+							index, "Spotify");
+				} catch (JSONException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 			// Object playlist = playLists[list.getSelectedIndex()];
 			// PlaylistTracksPan playlistTracks = new
