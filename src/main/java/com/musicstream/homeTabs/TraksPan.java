@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -154,7 +155,11 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 		for (int i = 0; i < nbSc; i++) {
 			try {
 				String url = scCover.getString(i);
-				map.put(sc.getString(i), new ImageIcon(new URL(url)));
+				ImageIcon img = new ImageIcon(new URL(url));
+				Image imag = img.getImage();
+				Image newimg = imag.getScaledInstance(20, 20,
+						java.awt.Image.SCALE_SMOOTH);
+				map.put(sc.getString(i), new ImageIcon(newimg));
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}

@@ -27,7 +27,7 @@ public class SpotifyController implements ErrorController {
 			.clientId("b09165e64a9447efafd9b995af73c2ee")
 			.clientSecret("bb561155b00945e689fdaa472c3c0bff")
 			.accessToken(
-					"BQCQ0DJbXMY_9eJb0izctXAMFrKnXPfvxhf4h6KAKdVgZrUbCaGyZ4YqzRdOownU-kw9wNKNzZKYG0zb095mCm2OdI_JGp-d0LGnIHmKnlulE6avzuOzYy7bM5SYxkbquVEHuypupedc2WmYcoEGxpH67wrcNejG3bSL_RzQVkeoSmZtNAhSms-WPicPhgrT8TQfNdfMjpiFHxFveJaV51jMBKpQrETfzZ9q05e9XqB244KCYh0uUzPhqYM1kCLmgonAVuqbtM8RKKX5hMpPBTzHiXj5FUtS3Af7Ilyr2CJWT1930abBjlbJ")
+					"BQAIL2I4fum347sWW-Mpqzuv6P5O9yZ9Wj5gbvYH5Dqbz3wQh1x-hOHSd_jAG9d7TM0wR_GBxwUk6AN0Mjbu1qnMxw4NglWh0mV2ssSq9UrXuR4_xh5cGo4cJTk2lqY6_0gw850-pKNkcqX8728b1faCq8tFHSg_Kjo1DGQBtlDqh0EewwCuzBCPBCqWOdEjZ6N5lMmKBQAcMtcwB4FQAKWyW3MM-yOUDB8sSv_Gyl4aBTZpa9vCsyC7iX9Ozmd4nAeFyHqGU77wTgj8JZDR6JWwYRbL3BgWKk08yGXy5zkeXcyg6y_XY16Z")
 			.build();
 
 	UserRequest userReq = spotify.getUser("salimharris").build();
@@ -41,9 +41,6 @@ public class SpotifyController implements ErrorController {
 				.getItems();
 		for (int i = 0; i < tracks.size(); i++) {
 			titles.add(tracks.get(i).getTrack().getName());
-			tracks.get(i).getTrack().getAlbum().getImages().get(0)
-					.setHeight(10);
-			tracks.get(i).getTrack().getAlbum().getImages().get(0).setWidth(10);
 			urlCover.add(tracks.get(i).getTrack().getAlbum().getImages().get(0)
 					.getUrl());
 		}
