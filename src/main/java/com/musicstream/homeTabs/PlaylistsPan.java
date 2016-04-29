@@ -3,6 +3,7 @@ package com.musicstream.homeTabs;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -151,7 +152,11 @@ public class PlaylistsPan extends JPanel implements ListSelectionListener {
 			try {
 				String artworkUrl = spCover.getString(i);
 				URL url = new URL(artworkUrl);
-				map.put(sp.getString(i), new ImageIcon(url));
+				ImageIcon img = new ImageIcon(url);
+				Image imag = img.getImage();
+				Image newimg = imag.getScaledInstance(120, 120,
+						java.awt.Image.SCALE_SMOOTH);
+				map.put(sp.getString(i), new ImageIcon(newimg));
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}

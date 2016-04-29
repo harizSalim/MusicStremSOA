@@ -3,6 +3,7 @@ package com.musicstream.homeTabs;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -76,16 +77,12 @@ public class PlaylistTracksPan extends JFrame implements ListSelectionListener {
 				e.printStackTrace();
 			}
 		}
-		/*if (source.equals("Spotify")) {
-			try {
-				jsonInfo = jsonReader
-						.readJsonFromUrl("http://localhost:8080/spplaylistinfo?index="
-								+ index);
-			} catch (IOException | JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}*/
+		/*
+		 * if (source.equals("Spotify")) { try { jsonInfo = jsonReader
+		 * .readJsonFromUrl("http://localhost:8080/spplaylistinfo?index=" +
+		 * index); } catch (IOException | JSONException e) { // TODO
+		 * Auto-generated catch block e.printStackTrace(); } }
+		 */
 		appU = new AppUtils();
 		tracksSource = new String[100];
 		soundCApi = new SoundCloudApi();
@@ -115,18 +112,14 @@ public class PlaylistTracksPan extends JFrame implements ListSelectionListener {
 				e.printStackTrace();
 			}
 		}
-		/*if (source.equals("Spotify")) {
-			try {
-				jsonInfoStream = jsonReader
-						.readJsonFromUrl("http://localhost:8080/spplaylistinfoStream?index="
-								+ index);
-			} catch (IOException | JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}*/
+		/*
+		 * if (source.equals("Spotify")) { try { jsonInfoStream = jsonReader
+		 * .readJsonFromUrl("http://localhost:8080/spplaylistinfoStream?index="
+		 * + index); } catch (IOException | JSONException e) { // TODO
+		 * Auto-generated catch block e.printStackTrace(); } }
+		 */
 
-		// streamU = this.getTracksStream();
+		streamU = this.getTracksStream();
 		tracksLength = this.getTrackLength();
 
 		list = new JList(nameList);
@@ -172,25 +165,21 @@ public class PlaylistTracksPan extends JFrame implements ListSelectionListener {
 		for (int i = 0; i < nb; i++) {
 			try {
 				String url = trCover.getString(i);
-				map.put(tr.getString(i), new ImageIcon(new URL(url)));
+				if (source.equals("Spotify")) {
+					ImageIcon img = new ImageIcon(url);
+					Image imag = img.getImage();
+					Image newimg = imag.getScaledInstance(120, 120,
+							java.awt.Image.SCALE_SMOOTH);
+					map.put(tr.getString(i), new ImageIcon(newimg));
+				} else {
+					map.put(tr.getString(i), new ImageIcon(new URL(url)));
+				}
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
 		}
 
 		return map;
-	}
-
-	private ArrayList<com.zeloon.deezer.domain.Track> getPlaylistTracksDeezer(
-			com.zeloon.deezer.domain.Playlist pl) {
-		ArrayList<com.zeloon.deezer.domain.Track> tracks = deezerApi
-				.getTracksofPlaylist(pl);
-		return tracks;
-	}
-
-	private ArrayList<Track> getPlaylistTracks(Playlist playlist) {
-		ArrayList<Track> tracks = soundCApi.getTracksofPlaylist(playlist);
-		return tracks;
 	}
 
 	/**
@@ -225,7 +214,7 @@ public class PlaylistTracksPan extends JFrame implements ListSelectionListener {
 	 * @return string containing the stream url of the playlis's Tracks
 	 * @throws JSONException
 	 */
-	private String[] getTracksStream(Object playlist) throws JSONException {
+	private String[] getTracksStream() throws JSONException {
 		org.json.JSONArray tr;
 		tr = (org.json.JSONArray) jsonInfoStream.get("urlStream");
 		String[] trS = new String[tr.length()];
