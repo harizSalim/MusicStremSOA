@@ -22,15 +22,15 @@ import de.voidplus.soundcloud.User;
 @RestController
 public class SpotifyController implements ErrorController {
 
-	final Api spotify = Api
+	Api spotify = Api
 			.builder()
 			.clientId("b09165e64a9447efafd9b995af73c2ee")
 			.clientSecret("bb561155b00945e689fdaa472c3c0bff")
 			.accessToken(
-					"BQAAuP8TGF10qKD5nrIBPYhDXczHaBJ_00gvliV0-NQWq7xr63UIJQi6Va6T9BgGPAhOwXKqilPY_Fwxrn1AIf1PFNfQWqRlEzuK9Ong277slhAw_dd0cJHAgelWzFkyxztw-J5UylREqgHtJceNn76dK1IGj82e5IuqU6s6TWrHq9qlkd4-018qJZiKxInlK_G5lFfJagUa8BDSSmU7dXat-QK0bO6_Slj9jOBkfWdu5gcd41pPfa2Be0PKqp91vys88BjRiw2morYiWrDLKjFRGAS__7i33YhNao3kr6DxuqGT-tUtb1z_")
+					"BQCQ0DJbXMY_9eJb0izctXAMFrKnXPfvxhf4h6KAKdVgZrUbCaGyZ4YqzRdOownU-kw9wNKNzZKYG0zb095mCm2OdI_JGp-d0LGnIHmKnlulE6avzuOzYy7bM5SYxkbquVEHuypupedc2WmYcoEGxpH67wrcNejG3bSL_RzQVkeoSmZtNAhSms-WPicPhgrT8TQfNdfMjpiFHxFveJaV51jMBKpQrETfzZ9q05e9XqB244KCYh0uUzPhqYM1kCLmgonAVuqbtM8RKKX5hMpPBTzHiXj5FUtS3Af7Ilyr2CJWT1930abBjlbJ")
 			.build();
 
-	final UserRequest userReq = spotify.getUser("salimharris").build();
+	UserRequest userReq = spotify.getUser("salimharris").build();
 	private static final String PATH = "/errorSP";
 
 	@RequestMapping("/spusertracks")
@@ -41,6 +41,9 @@ public class SpotifyController implements ErrorController {
 				.getItems();
 		for (int i = 0; i < tracks.size(); i++) {
 			titles.add(tracks.get(i).getTrack().getName());
+			tracks.get(i).getTrack().getAlbum().getImages().get(0)
+					.setHeight(10);
+			tracks.get(i).getTrack().getAlbum().getImages().get(0).setWidth(10);
 			urlCover.add(tracks.get(i).getTrack().getAlbum().getImages().get(0)
 					.getUrl());
 		}
@@ -111,15 +114,17 @@ public class SpotifyController implements ErrorController {
 				urlCover));
 	}
 
-	/*@RequestMapping("/spplaylistinfo")
-	public SpotifyModel playlistInfo(@RequestParam(value = "index") int index) throws IOException, WebApiException {
-		ArrayList<String> titles = new ArrayList<>();
-		ArrayList<String> urlCover = new ArrayList<>();
-		PlaylistTracksInformation playlist = spotify
-				.getPlaylistsForUser("salimharris").build().get().getItems()
-				.get(index).getTracks();
-		
-	}*/
+	/*
+	 * @RequestMapping("/spplaylistinfo") public SpotifyModel
+	 * playlistInfo(@RequestParam(value = "index") int index) throws
+	 * IOException, WebApiException { ArrayList<String> titles = new
+	 * ArrayList<>(); ArrayList<String> urlCover = new ArrayList<>();
+	 * PlaylistTracksInformation playlist = spotify
+	 * .getPlaylistsForUser("salimharris").build().get().getItems()
+	 * .get(index).getTracks();
+	 * 
+	 * }
+	 */
 
 	@RequestMapping(value = PATH)
 	public String error() {
