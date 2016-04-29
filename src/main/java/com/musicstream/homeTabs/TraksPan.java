@@ -155,11 +155,7 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 		for (int i = 0; i < nbSc; i++) {
 			try {
 				String url = scCover.getString(i);
-				ImageIcon img = new ImageIcon(new URL(url));
-				Image imag = img.getImage();
-				Image newimg = imag.getScaledInstance(20, 20,
-						java.awt.Image.SCALE_SMOOTH);
-				map.put(sc.getString(i), new ImageIcon(newimg));
+				map.put(sc.getString(i), new ImageIcon(new URL(url)));
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
@@ -181,7 +177,11 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 			try {
 				String artworkUrl = spCover.getString(i);
 				URL url = new URL(artworkUrl);
-				map.put(sp.getString(i), new ImageIcon(url));
+				ImageIcon img = new ImageIcon(url);
+				Image imag = img.getImage();
+				Image newimg = imag.getScaledInstance(20, 20,
+						java.awt.Image.SCALE_SMOOTH);
+				map.put(sp.getString(i), new ImageIcon(newimg));
 
 			} catch (Exception ex) {
 				// ex.printStackTrace();
