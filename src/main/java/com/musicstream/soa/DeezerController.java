@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.zeloon.deezer.client.DeezerClient;
 import com.zeloon.deezer.domain.User;
+import com.zeloon.deezer.domain.internal.PlaylistId;
 import com.zeloon.deezer.domain.internal.TrackId;
 import com.zeloon.deezer.domain.internal.UserId;
 import com.zeloon.deezer.domain.internal.search.Search;
@@ -96,12 +97,12 @@ public class DeezerController implements ErrorController {
 	public DeezerModel playlistInfo(@RequestParam(value = "index") int index) {
 		ArrayList<String> titles = new ArrayList<>();
 		ArrayList<String> urlCover = new ArrayList<>();
-		for (int i = 0; i < deezerClient.getPlaylists(uID).getData().get(index)
-				.getTracks().getData().size(); i++) {
-			titles.add(deezerClient.getPlaylists(uID).getData().get(index)
-					.getTracks().getData().get(i).getTitle());
-			urlCover.add(deezerClient.getPlaylists(uID).getData().get(index)
-					.getTracks().getData().get(i).getAlbum().getCover());
+		PlaylistId pID = new PlaylistId(deezerClient.getPlaylists(uID)
+				.getData().get(index).getId());
+		for (int i = 0; i < deezerClient.getTracks(pID).getData().size(); i++) {
+			titles.add(deezerClient.getTracks(pID).getData().get(i).getTitle());
+			urlCover.add(deezerClient.getTracks(pID).getData().get(i)
+					.getAlbum().getCover());
 		}
 		return (new DeezerModel(deezerClient.get(uID).getName(), titles,
 				urlCover, null, null));
@@ -112,10 +113,11 @@ public class DeezerController implements ErrorController {
 			@RequestParam(value = "index") int index) {
 		ArrayList<String> urlStream = new ArrayList<>();
 		ArrayList<Integer> lengths = new ArrayList<>();
-		for (int i = 0; i < deezerClient.getPlaylists(uID).getData().get(index)
-				.getTracks().getData().size(); i++) {
-			urlStream.add(deezerClient.getPlaylists(uID).getData().get(index)
-					.getTracks().getData().get(i).getPreview());
+		PlaylistId pID = new PlaylistId(deezerClient.getPlaylists(uID)
+				.getData().get(index).getId());
+		for (int i = 0; i < deezerClient.getTracks(pID).getData().size(); i++) {
+			urlStream.add(deezerClient.getTracks(pID).getData().get(i)
+					.getPreview());
 			lengths.add(30);
 		}
 		return (new DeezerModel(null, null, null, urlStream, lengths));

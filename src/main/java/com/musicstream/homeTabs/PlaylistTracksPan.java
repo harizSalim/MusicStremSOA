@@ -76,7 +76,7 @@ public class PlaylistTracksPan extends JFrame implements ListSelectionListener {
 				e.printStackTrace();
 			}
 		}
-		if (source.equals("Spotify")) {
+		/*if (source.equals("Spotify")) {
 			try {
 				jsonInfo = jsonReader
 						.readJsonFromUrl("http://localhost:8080/spplaylistinfo?index="
@@ -85,7 +85,7 @@ public class PlaylistTracksPan extends JFrame implements ListSelectionListener {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
+		}*/
 		appU = new AppUtils();
 		tracksSource = new String[100];
 		soundCApi = new SoundCloudApi();
@@ -115,7 +115,7 @@ public class PlaylistTracksPan extends JFrame implements ListSelectionListener {
 				e.printStackTrace();
 			}
 		}
-		if (source.equals("Spotify")) {
+		/*if (source.equals("Spotify")) {
 			try {
 				jsonInfoStream = jsonReader
 						.readJsonFromUrl("http://localhost:8080/spplaylistinfoStream?index="
@@ -124,7 +124,7 @@ public class PlaylistTracksPan extends JFrame implements ListSelectionListener {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
+		}*/
 
 		// streamU = this.getTracksStream();
 		tracksLength = this.getTrackLength();
