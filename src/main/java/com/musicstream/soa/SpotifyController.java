@@ -1,8 +1,11 @@
 package com.musicstream.soa;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.ImageIcon;
 
 import org.springframework.boot.autoconfigure.web.ErrorController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +20,6 @@ import com.wrapper.spotify.models.LibraryTrack;
 import com.wrapper.spotify.models.PlaylistTrack;
 import com.wrapper.spotify.models.SimplePlaylist;
 import com.wrapper.spotify.models.Track;
-import com.zeloon.deezer.domain.Tracks;
 
 @RestController
 public class SpotifyController implements ErrorController {
@@ -27,11 +29,12 @@ public class SpotifyController implements ErrorController {
 			.clientId("b09165e64a9447efafd9b995af73c2ee")
 			.clientSecret("bb561155b00945e689fdaa472c3c0bff")
 			.accessToken(
-					"BQB_PNli1VCD-iHhyTxJNsCocdDw4cmhKWuNDbLo53vK5QdSS-oP_ue5QWk3rNNEsXECQ1XfHZprHiL7OvsFqmw5eDKR4htAgAL56MedFyFLkBvoAePmen9f6LN1z6T498ZSgK6pkgEWN-0K6J5eRK5EIKipog5raC7FEHozmqZ3QeNhkURqYqxWaUSGgeGsZzkzy8esb2U_SfVNpP9qJygs7YXT7d3dlRp3s43sX9RJBD8A-7kHFtuVUJskqVwd_yOP9JB90W-YGWXopG3N0MVVJNYPM24iJoeS9Kj2Nk2pwZt7eypyjjPl")
+					"BQAlxx_rxXbeZRthMtxTbbZlhR96rPpxzdDv7NuOe68bu-LlEIXg0K3_RqrhAuhYYosOa98PIAkjsTUkhLWEPLzswsVQ2b98iwq5Tjf-sXCa8o8j99mdQUirU2MACsciIFCTsEbkOwA5yBzVaHYwNDybTyk-xpppR7JPAXXdpv7GjG8ZWHNIXuPrCLxyFQQlJVscpigWgJXTDfVyTpTRxi3dNZeVZa5DPSVBlYePOmR2mS_8NGE3d3Fj37D08nAzVW_Sh9-LfjvPPtn95tpsclUQjqg-5qxRcKEigEWpv3zWP8uZE-ybZ8g1")
 			.build();
 
 	UserRequest userReq = spotify.getUser("salimharris").build();
 	private static final String PATH = "/errorSP";
+	List<SimplePlaylist> simplePlay = new ArrayList<SimplePlaylist>();
 
 	@RequestMapping("/spusertracks")
 	public SpotifyModel userTracks() throws IOException, WebApiException {
@@ -104,8 +107,16 @@ public class SpotifyController implements ErrorController {
 		List<SimplePlaylist> playlists = spotify
 				.getPlaylistsForUser("salimharris").build().get().getItems();
 		for (int i = 0; i < playlists.size(); i++) {
-			titles.add(playlists.get(i).getName());
-			urlCover.add(playlists.get(i).getImages().get(0).getUrl());
+			if (spotify.getPlaylistsForUser("salimharris").build().get()
+					.getItems().get(i).getOwner().getId().equals("salimharris")) {
+				simplePlay.add(playlists.get(i));
+				titles.add(playlists.get(i).getName());
+				try {
+					urlCover.add(playlists.get(i).getImages().get(0).getUrl());
+				} catch (Exception ex) {
+					urlCover.add("https://yt3.ggpht.com/-b05GwzWbqZE/AAAAAAAAAAI/AAAAAAAAAAA/_d2WA1qZyi8/s100-c-k-no/photo.jpg");
+				}
+			}
 		}
 		return (new SpotifyModel(userReq.get().getDisplayName(), titles,
 				urlCover));
@@ -116,10 +127,9 @@ public class SpotifyController implements ErrorController {
 			throws IOException, WebApiException {
 		ArrayList<String> titles = new ArrayList<>();
 		ArrayList<String> urlCover = new ArrayList<>();
-		String id = spotify.getPlaylistsForUser("salimharris").build().get()
-				.getItems().get(index).getId();
-		PlaylistTracksRequest req = spotify.getPlaylistTracks(
-				userReq.get().getId(), id).build();
+		String id = simplePlay.get(index).getId();
+		PlaylistTracksRequest req = spotify
+				.getPlaylistTracks("salimharris", id).build();
 		List<PlaylistTrack> tracks = req.get().getItems();
 		for (int i = 0; i < tracks.size(); i++) {
 			titles.add(tracks.get(i).getTrack().getName());
@@ -136,11 +146,9 @@ public class SpotifyController implements ErrorController {
 			WebApiException {
 		ArrayList<String> urlStream = new ArrayList<>();
 		ArrayList<Integer> lengths = new ArrayList<>();
-		String id = spotify.getPlaylistsForUser("salimharris").build().get()
-				.getItems().get(index).getId();
+		String id = simplePlay.get(index).getId();
 		List<PlaylistTrack> tracks = spotify
-				.getPlaylistTracks(userReq.get().getId(), id).build().get()
-				.getItems();
+				.getPlaylistTracks("salimharris", id).build().get().getItems();
 		for (int i = 0; i < tracks.size(); i++) {
 			urlStream.add(tracks.get(i).getTrack().getPreviewUrl());
 			lengths.add(30);
