@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.Image;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,12 +22,8 @@ import javax.swing.event.ListSelectionListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.musicstream.api.DeezerApi;
-import com.musicstream.api.SoundCloudApi;
 import com.musicstream.utils.AppUtils;
 import com.musicstream.utils.JsonReader;
-
-import de.voidplus.soundcloud.Playlist;
 
 /**
  * @author Malek
@@ -37,11 +32,8 @@ import de.voidplus.soundcloud.Playlist;
 public class PlaylistsPan extends JPanel implements ListSelectionListener {
 	private final Map<String, ImageIcon> imageMap;
 	public AppUtils appU;
-	SoundCloudApi soundCApi;
-	DeezerApi deezerApi;
 	Font fontLabel;
 	private JList list;
-	Object[] playLists;
 	private String[] tracksSource;
 	private JsonReader jsonReader;
 	private JSONObject jsonSC, jsonDZ, jsonSP;
@@ -49,8 +41,6 @@ public class PlaylistsPan extends JPanel implements ListSelectionListener {
 
 	public PlaylistsPan() throws JSONException {
 		appU = new AppUtils();
-		soundCApi = new SoundCloudApi();
-		deezerApi = new DeezerApi();
 		jsonReader = new JsonReader();
 		tracksSource = new String[100];
 		try {
@@ -65,7 +55,6 @@ public class PlaylistsPan extends JPanel implements ListSelectionListener {
 			e.printStackTrace();
 		}
 		String[] nameList = setNameList();
-		playLists = setPlaylists();
 		imageMap = createImageMap(nameList);
 		fontLabel = new Font("helvitica", Font.BOLD, 18);
 
@@ -166,31 +155,12 @@ public class PlaylistsPan extends JPanel implements ListSelectionListener {
 	}
 
 	/**
-	 * @return User Playlists
-	 */
-
-	private ArrayList<Playlist> getUserPlaylists() {
-
-		ArrayList<Playlist> playlists = soundCApi.getPlaylistByUser();
-		return playlists;
-	}
-
-	private ArrayList<com.zeloon.deezer.domain.Playlist> getUserPlaylistsDeezer() {
-		ArrayList<com.zeloon.deezer.domain.Playlist> playlistsDeezer = deezerApi
-				.getPlaylistByUser();
-		return playlistsDeezer;
-	}
-
-	/**
 	 * @return Array that contains the names of the playlists to be associated
 	 *         with their images and to be displayed in the JList
 	 * @throws JSONException
 	 */
 	private String[] setNameList() throws JSONException {
 
-		// ArrayList<Playlist> playlists = getUserPlaylists();
-		// ArrayList<com.zeloon.deezer.domain.Playlist> playlistsDeezer =
-		// getUserPlaylistsDeezer();
 		org.json.JSONArray sc, dz, sp;
 		sc = (org.json.JSONArray) jsonSC.get("playlistName");
 		dz = (org.json.JSONArray) jsonDZ.get("playlistName");
@@ -213,20 +183,6 @@ public class PlaylistsPan extends JPanel implements ListSelectionListener {
 			tracksSource[i + nbSc + nbDz] = "Spotify";
 		}
 		return nameList;
-	}
-
-	private Object[] setPlaylists() {
-		ArrayList<Playlist> playlists = getUserPlaylists();
-		ArrayList<com.zeloon.deezer.domain.Playlist> playlistsDeezer = getUserPlaylistsDeezer();
-		Object[] playList = new Object[playlists.size()
-				+ playlistsDeezer.size()];
-		for (int i = 0; i < playlists.size(); i++) {
-			playList[i] = playlists.get(i);
-		}
-		for (int i = 0; i < playlistsDeezer.size(); i++) {
-			playList[i + playlists.size()] = playlistsDeezer.get(i);
-		}
-		return playList;
 	}
 
 	/**
@@ -277,9 +233,6 @@ public class PlaylistsPan extends JPanel implements ListSelectionListener {
 					e1.printStackTrace();
 				}
 			}
-			// Object playlist = playLists[list.getSelectedIndex()];
-			// PlaylistTracksPan playlistTracks = new
-			// PlaylistTracksPan(playlist);
 		}
 	}
 }

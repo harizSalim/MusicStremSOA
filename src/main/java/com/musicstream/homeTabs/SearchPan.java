@@ -47,12 +47,10 @@ public class SearchPan extends JPanel implements ActionListener,
 	private JButton search;
 	private Map<String, ImageIcon> imageMap;
 	public AppUtils appU;
-	// private DeezerApi deezerApi;
 	private Font fontLabel;
 	private String[] nameList;
 	private JList list;
 	private JScrollPane scroll = null;
-	// private SoundCloudApi soundCApi;
 	private String[] streamU;
 	private int[] tracksLength;
 	private MusicPlayer player;
@@ -64,9 +62,6 @@ public class SearchPan extends JPanel implements ActionListener,
 
 	public SearchPan() {
 		appU = new AppUtils();
-		tracksSource = new String[100];
-		// soundCApi = new SoundCloudApi();
-		// deezerApi = new DeezerApi();
 		fontLabel = new Font("helvitica", Font.BOLD, 18);
 		list = new JList();
 		list.addListSelectionListener(this);
@@ -155,8 +150,6 @@ public class SearchPan extends JPanel implements ActionListener,
 			// TODO Auto-generated catch block
 			ex.printStackTrace();
 		}
-
-		// tracks = this.getTracks();
 	}
 
 	/**
@@ -191,11 +184,6 @@ public class SearchPan extends JPanel implements ActionListener,
 	private Map<String, ImageIcon> createImageMap(String title)
 			throws MalformedURLException, JSONException {
 		Map<String, ImageIcon> map = new HashMap<>();
-		// ArrayList<Track> tracks = new ArrayList<Track>();
-		// ArrayList<com.zeloon.deezer.domain.Track> tracksDeezer = new
-		// ArrayList<com.zeloon.deezer.domain.Track>();
-		// tracks = getSearchResult(title);
-		// tracksDeezer = getSearchResultDeezer(title);
 		org.json.JSONArray sc, dz, sp, scCover, dzCover, spCover;
 		sc = (org.json.JSONArray) jsonSC.get("title");
 		dz = (org.json.JSONArray) jsonDZ.get("title");
@@ -224,7 +212,6 @@ public class SearchPan extends JPanel implements ActionListener,
 				URL url = new URL(artworkUrl);
 				map.put(dz.getString(i), new ImageIcon(url));
 			} catch (Exception ex) {
-				// ex.printStackTrace();
 				artworkUrl = "https://yt3.ggpht.com/-b05GwzWbqZE/AAAAAAAAAAI/AAAAAAAAAAA/_d2WA1qZyi8/s100-c-k-no/photo.jpg";
 				URL url = new URL(artworkUrl);
 				map.put(dz.getString(i), new ImageIcon(url));
@@ -257,9 +244,6 @@ public class SearchPan extends JPanel implements ActionListener,
 	 */
 	public String[] setNameList(String title) throws JSONException {
 
-		// ArrayList<Track> tracks = getSearchResult(title);
-		// ArrayList<com.zeloon.deezer.domain.Track> tracksDeezer =
-		// getSearchResultDeezer(title);
 		org.json.JSONArray sc, dz, sp;
 		sc = (org.json.JSONArray) jsonSC.get("title");
 		dz = (org.json.JSONArray) jsonDZ.get("title");
@@ -268,6 +252,7 @@ public class SearchPan extends JPanel implements ActionListener,
 		int nbDz = dz.length();
 		int nbSp = sp.length();
 		String[] nameList = new String[nbSc + nbDz + nbSp];
+		tracksSource = new String[nbSc + nbDz + nbSp];
 		for (int i = 0; i < nbSc; i++) {
 			nameList[i] = sc.getString(i);
 			tracksSource[i] = "Soundcloud";

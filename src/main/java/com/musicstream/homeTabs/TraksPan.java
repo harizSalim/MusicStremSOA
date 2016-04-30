@@ -36,8 +36,6 @@ import com.musicstream.utils.JsonReader;
 public class TraksPan extends JPanel implements ListSelectionListener {
 	private final Map<String, ImageIcon> imageMap;
 	public AppUtils appU;
-	// private SoundCloudApi soundCApi;
-	// private DeezerApi deezerApi;
 	private MusicPlayer player;
 	private Font fontLabel;
 	private JList list;
@@ -64,8 +62,7 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// soundCApi = new SoundCloudApi();
-		// deezerApi = new DeezerApi();
+
 		player = new MusicPlayer();
 		nameList = setNameList();
 		fontLabel = new Font("helvitica", Font.BOLD, 18);
@@ -150,8 +147,7 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 		int nbSc = sc.length();
 		int nbDz = dz.length();
 		int nbSp = sp.length();
-		// ArrayList<com.zeloon.deezer.domain.Track> tracksDeezer =
-		// getUserTracksDeezer();
+
 		for (int i = 0; i < nbSc; i++) {
 			try {
 				String url = scCover.getString(i);
@@ -163,8 +159,6 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 		for (int i = 0; i < nbDz; i++) {
 			try {
 
-				// TrackId tID = new TrackId(tracksDeezer.get(i).getId());
-				// deezerApi.getPreviewTrack(tID);
 				String artworkUrl = dzCover.getString(i);
 				URL url = new URL(artworkUrl);
 				map.put(dz.getString(i), new ImageIcon(url));
@@ -179,7 +173,7 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 				URL url = new URL(artworkUrl);
 				ImageIcon img = new ImageIcon(url);
 				Image imag = img.getImage();
-				Image newimg = imag.getScaledInstance(20, 20,
+				Image newimg = imag.getScaledInstance(120, 120,
 						java.awt.Image.SCALE_SMOOTH);
 				map.put(sp.getString(i), new ImageIcon(newimg));
 
@@ -198,7 +192,6 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 	 */
 	private String[] setNameList() throws JSONException {
 
-		// ArrayList<Track> tracks = getUserTracks();
 		org.json.JSONArray sc, dz, sp;
 		sc = (org.json.JSONArray) jsonSC.get("title");
 		dz = (org.json.JSONArray) jsonDZ.get("title");
@@ -206,8 +199,6 @@ public class TraksPan extends JPanel implements ListSelectionListener {
 		int nbSc = sc.length();
 		int nbDz = dz.length();
 		int nbSp = sp.length();
-		// ArrayList<com.zeloon.deezer.domain.Track> tracksDeezer =
-		// getUserTracksDeezer();
 		String[] nameList = new String[nbSc + nbDz + nbSp];
 		for (int i = 0; i < nbSc; i++) {
 			nameList[i] = sc.getString(i);

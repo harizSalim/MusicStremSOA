@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.Image;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,37 +24,27 @@ import javax.swing.event.ListSelectionListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.musicstream.api.DeezerApi;
-import com.musicstream.api.SoundCloudApi;
 import com.musicstream.player.MusicPlayer;
 import com.musicstream.utils.AppUtils;
 import com.musicstream.utils.JsonReader;
-
-import de.voidplus.soundcloud.Playlist;
-import de.voidplus.soundcloud.Track;
 
 public class PlaylistTracksPan extends JFrame implements ListSelectionListener {
 
 	private final Map<String, ImageIcon> imageMap;
 	public AppUtils appU;
-	private SoundCloudApi soundCApi;
-	private DeezerApi deezerApi;
 	private MusicPlayer player;
 	private Font fontLabel;
 	private JList list;
 	private String[] nameList;
 	private String[] streamU;
 	private int[] tracksLength;
-	private String[] tracksSource;
-	private Object playlist;
 	private JScrollPane scroll;
 	private String title = "";
 	private JsonReader jsonReader;
 	private JSONObject jsonInfo, jsonInfoStream;
-	String source;
+	private String source;
 
 	public PlaylistTracksPan(int index, String source) throws JSONException {
-		// this.playlist = playlist;
 		this.source = source;
 		if (source.equals("Soundcloud")) {
 			try {
@@ -84,9 +73,6 @@ public class PlaylistTracksPan extends JFrame implements ListSelectionListener {
 		 * Auto-generated catch block e.printStackTrace(); } }
 		 */
 		appU = new AppUtils();
-		tracksSource = new String[100];
-		soundCApi = new SoundCloudApi();
-		deezerApi = new DeezerApi();
 		player = new MusicPlayer();
 		nameList = setNameList();
 		fontLabel = new Font("helvitica", Font.BOLD, 18);
@@ -187,14 +173,12 @@ public class PlaylistTracksPan extends JFrame implements ListSelectionListener {
 	 * @throws JSONException
 	 */
 	private String[] setNameList() throws JSONException {
-		org.json.JSONArray tr, trCover;
+		org.json.JSONArray tr;
 		tr = (org.json.JSONArray) jsonInfo.get("title");
-		trCover = (org.json.JSONArray) jsonInfo.get("urlCover");
 		int nb = tr.length();
 		String[] nameListTemp = new String[nb];
 		for (int i = 0; i < nb; i++) {
 			nameListTemp[i] = tr.getString(i);
-			tracksSource[i] = source;
 		}
 		return nameListTemp;
 	}
@@ -268,7 +252,6 @@ public class PlaylistTracksPan extends JFrame implements ListSelectionListener {
 			@Override
 			public void run() {
 				int index = list.getSelectedIndex();
-				String source = tracksSource[index];
 				player.setVisible(true);
 				player.getTrackToPlayLength(tracksLength[index], source);
 				player.getTrackToPlay(streamU[index]);
