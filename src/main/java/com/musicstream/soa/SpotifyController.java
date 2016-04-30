@@ -11,14 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.wrapper.spotify.Api;
 import com.wrapper.spotify.exceptions.WebApiException;
+import com.wrapper.spotify.methods.PlaylistTracksRequest;
 import com.wrapper.spotify.methods.UserRequest;
 import com.wrapper.spotify.models.LibraryTrack;
 import com.wrapper.spotify.models.PlaylistTrack;
-import com.wrapper.spotify.models.PlaylistTracksInformation;
 import com.wrapper.spotify.models.SimplePlaylist;
 import com.wrapper.spotify.models.Track;
-
-import de.voidplus.soundcloud.User;
+import com.zeloon.deezer.domain.Tracks;
 
 @RestController
 public class SpotifyController implements ErrorController {
@@ -28,7 +27,7 @@ public class SpotifyController implements ErrorController {
 			.clientId("b09165e64a9447efafd9b995af73c2ee")
 			.clientSecret("bb561155b00945e689fdaa472c3c0bff")
 			.accessToken(
-					"BQAIL2I4fum347sWW-Mpqzuv6P5O9yZ9Wj5gbvYH5Dqbz3wQh1x-hOHSd_jAG9d7TM0wR_GBxwUk6AN0Mjbu1qnMxw4NglWh0mV2ssSq9UrXuR4_xh5cGo4cJTk2lqY6_0gw850-pKNkcqX8728b1faCq8tFHSg_Kjo1DGQBtlDqh0EewwCuzBCPBCqWOdEjZ6N5lMmKBQAcMtcwB4FQAKWyW3MM-yOUDB8sSv_Gyl4aBTZpa9vCsyC7iX9Ozmd4nAeFyHqGU77wTgj8JZDR6JWwYRbL3BgWKk08yGXy5zkeXcyg6y_XY16Z")
+					"BQB_PNli1VCD-iHhyTxJNsCocdDw4cmhKWuNDbLo53vK5QdSS-oP_ue5QWk3rNNEsXECQ1XfHZprHiL7OvsFqmw5eDKR4htAgAL56MedFyFLkBvoAePmen9f6LN1z6T498ZSgK6pkgEWN-0K6J5eRK5EIKipog5raC7FEHozmqZ3QeNhkURqYqxWaUSGgeGsZzkzy8esb2U_SfVNpP9qJygs7YXT7d3dlRp3s43sX9RJBD8A-7kHFtuVUJskqVwd_yOP9JB90W-YGWXopG3N0MVVJNYPM24iJoeS9Kj2Nk2pwZt7eypyjjPl")
 			.build();
 
 	UserRequest userReq = spotify.getUser("salimharris").build();
@@ -119,8 +118,9 @@ public class SpotifyController implements ErrorController {
 		ArrayList<String> urlCover = new ArrayList<>();
 		String id = spotify.getPlaylistsForUser("salimharris").build().get()
 				.getItems().get(index).getId();
-		List<PlaylistTrack> tracks = spotify
-				.getPlaylistTracks("salimharris", id).build().get().getItems();
+		PlaylistTracksRequest req = spotify.getPlaylistTracks(
+				userReq.get().getId(), id).build();
+		List<PlaylistTrack> tracks = req.get().getItems();
 		for (int i = 0; i < tracks.size(); i++) {
 			titles.add(tracks.get(i).getTrack().getName());
 			urlCover.add(tracks.get(i).getTrack().getAlbum().getImages().get(0)
@@ -139,7 +139,8 @@ public class SpotifyController implements ErrorController {
 		String id = spotify.getPlaylistsForUser("salimharris").build().get()
 				.getItems().get(index).getId();
 		List<PlaylistTrack> tracks = spotify
-				.getPlaylistTracks("salimharris", id).build().get().getItems();
+				.getPlaylistTracks(userReq.get().getId(), id).build().get()
+				.getItems();
 		for (int i = 0; i < tracks.size(); i++) {
 			urlStream.add(tracks.get(i).getTrack().getPreviewUrl());
 			lengths.add(30);
