@@ -106,8 +106,11 @@ public class SoundcloudController implements ErrorController {
 		ArrayList<Integer> lengths = new ArrayList<>();
 		for (int i = 0; i < (soundcloud.getMePlaylists().get(index).getTracks())
 				.size(); i++) {
-			urlStream.add(soundcloud.getMePlaylists().get(index).getTracks()
-					.get(i).getStreamUrl());
+			try {
+				urlStream.add(soundcloud.getMePlaylists().get(index)
+						.getTracks().get(i).getStreamUrl());
+			} catch (Exception ex) {
+			}
 			lengths.add(soundcloud.getMePlaylists().get(index).getTracks()
 					.get(i).getDuration());
 		}
