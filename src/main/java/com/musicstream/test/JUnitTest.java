@@ -1,63 +1,56 @@
 package com.musicstream.test;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.TestRestTemplate;
+import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.web.client.RestTemplate;
 
-import com.musicstream.api.DeezerApi;
-import com.musicstream.api.SoundCloudApi;
-import com.musicstream.homeTabs.SearchPan;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.musicstream.soa.Application;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes = Application.class)
+@WebIntegrationTest
 public class JUnitTest {
 
-	SoundCloudApi soundCloudAPI = new SoundCloudApi();
-	DeezerApi deezerAPI = new DeezerApi();
+	// Required to Generate JSON content from Java objects
+	public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+	// Test RestTemplate to invoke the APIs.
+	private RestTemplate restTemplate = new TestRestTemplate();
 
 	@Test
-	public void testSoundCloudApi() {
-		assertNotNull("Soundcloud API instancié ", soundCloudAPI);
+	public void testScUserTracks() {
+		Map<String, Object> scResponse = restTemplate.getForObject(
+				"http://localhost:8080/scusertracks", Map.class);
+
+		assertNotNull("Soundcloud User Tracks : ", scResponse);
+
+		List<Map<String, Object>> booksList = (List<Map<String, Object>>) scResponse
+				.get("title");
+		assertTrue(booksList.size() != 0);
+
 	}
 
 	@Test
-	public void testDeezerApi() {
-		assertNotNull("Deezer API instancié ", deezerAPI);
-	}
+	public void testScUserTracksStream() {
+		Map<String, Object> scResponse = restTemplate.getForObject(
+				"http://localhost:8080/scusertracksstream", Map.class);
 
-	@Test
-	public void tesGetSCUser() {
-		assertNotNull("Session Soundcloud ouverte: ", soundCloudAPI.getUser());
-	}
+		assertNotNull("Soundcloud User Tracks Stream : ", scResponse);
 
-	@Test
-	public void tesGetDZUser() {
-		assertNotNull("Session Deezer ouverte: ", deezerAPI.getUser());
-	}
+		List<Map<String, Object>> booksList = (List<Map<String, Object>>) scResponse
+				.get("title");
+		assertTrue(booksList.size() != 0);
 
-	@Test
-	public void testGetTracksByUser() {
-		assertNotNull("Liste des chansons chargées de Soundcloud ",
-				soundCloudAPI.getTracksByUser());
-		assertNotNull("Liste des chansons chargées de Deezer ",
-				deezerAPI.getTracksByUser());
-	}
-
-	@Test
-	public void testGetPlaylistByUser() {
-		assertNotNull("Liste des playlists chargées de Soundcloud ",
-				soundCloudAPI.getPlaylistByUser());
-		assertNotNull("Liste des playlists chargées de Deezer ",
-				deezerAPI.getPlaylistByUser());
-	}
-
-	@Test
-	public void testGetTracksSearch() {
-		assertNotNull("Liste des chansons recherchées chargées de Soundcloud ",
-				soundCloudAPI.getTrack(SearchPan.textField.getText()));
-		assertNotNull("Liste des chansons recherchées chargées de Deezer ",
-				deezerAPI.getTrack(SearchPan.textField.getText()));
-	}
-
-	public static void main(String[] args) {
-		org.junit.runner.JUnitCore.main("com.musicstream.test.JUnitTest");
 	}
 }
