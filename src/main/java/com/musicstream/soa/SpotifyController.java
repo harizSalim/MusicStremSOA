@@ -13,6 +13,7 @@ import com.wrapper.spotify.Api;
 import com.wrapper.spotify.exceptions.WebApiException;
 import com.wrapper.spotify.methods.UserRequest;
 import com.wrapper.spotify.models.LibraryTrack;
+import com.wrapper.spotify.models.PlaylistTrack;
 import com.wrapper.spotify.models.PlaylistTracksInformation;
 import com.wrapper.spotify.models.SimplePlaylist;
 import com.wrapper.spotify.models.Track;
@@ -56,7 +57,7 @@ public class SpotifyController implements ErrorController {
 				.getItems();
 		for (int i = 0; i < tracks.size(); i++) {
 			urlStream.add(tracks.get(i).getTrack().getPreviewUrl());
-			lengths.add(tracks.get(i).getTrack().getDuration());
+			lengths.add(30);
 		}
 		return (new SpotifyModel(null, null, null, urlStream, lengths));
 	}
@@ -91,7 +92,7 @@ public class SpotifyController implements ErrorController {
 		if (tracks.size() > 0) {
 			for (int i = 0; i < 5; i++) {
 				urlStream.add(tracks.get(i).getPreviewUrl());
-				lengths.add(tracks.get(i).getDuration());
+				lengths.add(30);
 			}
 		}
 		return (new SpotifyModel(null, null, null, urlStream, lengths));
@@ -111,17 +112,40 @@ public class SpotifyController implements ErrorController {
 				urlCover));
 	}
 
-	/*
-	 * @RequestMapping("/spplaylistinfo") public SpotifyModel
-	 * playlistInfo(@RequestParam(value = "index") int index) throws
-	 * IOException, WebApiException { ArrayList<String> titles = new
-	 * ArrayList<>(); ArrayList<String> urlCover = new ArrayList<>();
-	 * PlaylistTracksInformation playlist = spotify
-	 * .getPlaylistsForUser("salimharris").build().get().getItems()
-	 * .get(index).getTracks();
-	 * 
-	 * }
-	 */
+	@RequestMapping("/spplaylistinfo")
+	public SpotifyModel playlistInfo(@RequestParam(value = "index") int index)
+			throws IOException, WebApiException {
+		ArrayList<String> titles = new ArrayList<>();
+		ArrayList<String> urlCover = new ArrayList<>();
+		String id = spotify.getPlaylistsForUser("salimharris").build().get()
+				.getItems().get(index).getId();
+		List<PlaylistTrack> tracks = spotify
+				.getPlaylistTracks("salimharris", id).build().get().getItems();
+		for (int i = 0; i < tracks.size(); i++) {
+			titles.add(tracks.get(i).getTrack().getName());
+			urlCover.add(tracks.get(i).getTrack().getAlbum().getImages().get(0)
+					.getUrl());
+		}
+		return (new SpotifyModel(userReq.get().getDisplayName(), titles,
+				urlCover, null, null));
+	}
+
+	@RequestMapping("/spplaylistinfoStream")
+	public SpotifyModel playlistInfoStream(
+			@RequestParam(value = "index") int index) throws IOException,
+			WebApiException {
+		ArrayList<String> urlStream = new ArrayList<>();
+		ArrayList<Integer> lengths = new ArrayList<>();
+		String id = spotify.getPlaylistsForUser("salimharris").build().get()
+				.getItems().get(index).getId();
+		List<PlaylistTrack> tracks = spotify
+				.getPlaylistTracks("salimharris", id).build().get().getItems();
+		for (int i = 0; i < tracks.size(); i++) {
+			urlStream.add(tracks.get(i).getTrack().getPreviewUrl());
+			lengths.add(30);
+		}
+		return (new SpotifyModel(null, null, null, urlStream, lengths));
+	}
 
 	@RequestMapping(value = PATH)
 	public String error() {

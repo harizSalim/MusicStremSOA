@@ -66,12 +66,18 @@ public class PlaylistTracksPan extends JFrame implements ListSelectionListener {
 				e.printStackTrace();
 			}
 		}
-		/*
-		 * if (source.equals("Spotify")) { try { jsonInfo = jsonReader
-		 * .readJsonFromUrl("http://localhost:8080/spplaylistinfo?index=" +
-		 * index); } catch (IOException | JSONException e) { // TODO
-		 * Auto-generated catch block e.printStackTrace(); } }
-		 */
+
+		if (source.equals("Spotify")) {
+			try {
+				jsonInfo = jsonReader
+						.readJsonFromUrl("http://localhost:8080/spplaylistinfo?index="
+								+ index);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
 		appU = new AppUtils();
 		player = new MusicPlayer();
 		nameList = setNameList();
@@ -98,12 +104,17 @@ public class PlaylistTracksPan extends JFrame implements ListSelectionListener {
 				e.printStackTrace();
 			}
 		}
-		/*
-		 * if (source.equals("Spotify")) { try { jsonInfoStream = jsonReader
-		 * .readJsonFromUrl("http://localhost:8080/spplaylistinfoStream?index="
-		 * + index); } catch (IOException | JSONException e) { // TODO
-		 * Auto-generated catch block e.printStackTrace(); } }
-		 */
+
+		if (source.equals("Spotify")) {
+			try {
+				jsonInfoStream = jsonReader
+						.readJsonFromUrl("http://localhost:8080/spplaylistinfoStream?index="
+								+ index);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 
 		streamU = this.getTracksStream();
 		tracksLength = this.getTrackLength();
