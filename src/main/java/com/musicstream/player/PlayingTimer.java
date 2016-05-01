@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-import javax.sound.sampled.Clip;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
 
@@ -26,7 +25,6 @@ public class PlayingTimer extends Thread {
 
 	private JLabel labelRecordTime;
 	private JSlider slider;
-	private Clip audioClip;
 
 	public void setActualSeconds(int seconds) {
 		this.seconds = seconds;

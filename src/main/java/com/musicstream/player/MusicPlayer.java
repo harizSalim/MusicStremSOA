@@ -7,7 +7,6 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -28,18 +27,12 @@ public class MusicPlayer extends JPanel implements ActionListener {
 	public String url;
 	public int length;
 	public String source;
-	// private static Thread t;
 	private boolean isPlaying = false;
 	private boolean isPause = false;
 
-	// private String audioFilePath;
-	// private String lastOpenPath;
-
-	// private JLabel labelFileName = new JLabel("Playing File:");
 	private JLabel labelTimeCounter = new JLabel("00:00:00");
 	private JLabel labelDuration = new JLabel("00:00:00");
 
-	// private JButton buttonOpen = new JButton("Open");
 	private JButton buttonPlay = new JButton("Play");
 	private JButton buttonPause = new JButton("Pause");
 
@@ -50,11 +43,6 @@ public class MusicPlayer extends JPanel implements ActionListener {
 	final Timer chrono;
 	private int actualSeconds = 0;
 
-	// Icons used for buttons
-	/*
-	 * private ImageIcon iconOpen = new ImageIcon(getClass().getResource(
-	 * "images/Open.png"));
-	 */
 	private ImageIcon iconPlay = new ImageIcon("icons/Play.gif");
 	private ImageIcon iconStop = new ImageIcon("icons/Stop.gif");
 	private ImageIcon iconPause = new ImageIcon("icons/Pause.png");
@@ -67,11 +55,6 @@ public class MusicPlayer extends JPanel implements ActionListener {
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.insets = new Insets(5, 5, 5, 5);
 		constraints.anchor = GridBagConstraints.WEST;
-
-		/*
-		 * buttonOpen.setFont(new Font("Sans", Font.BOLD, 14));
-		 * buttonOpen.setIcon(iconOpen);
-		 */
 
 		buttonPlay.setFont(new Font("Sans", Font.BOLD, 14));
 		buttonPlay.setIcon(iconPlay);
@@ -90,11 +73,6 @@ public class MusicPlayer extends JPanel implements ActionListener {
 		sliderTime.setEnabled(false);
 		sliderTime.setValue(0);
 
-		// constraints.gridx = 0;
-		// constraints.gridy = 0;
-		// constraints.gridwidth = 3;
-		// add(labelFileName, constraints);
-
 		constraints.anchor = GridBagConstraints.CENTER;
 		constraints.gridy = 1;
 		constraints.gridwidth = 1;
@@ -112,18 +90,6 @@ public class MusicPlayer extends JPanel implements ActionListener {
 		constraints.gridx = 6;
 		add(labelDuration, constraints);
 
-		// JPanel panelButtons = new JPanel(new FlowLayout(FlowLayout.CENTER,
-		// 20, 5));
-		// panelButtons.add(buttonOpen);
-		// panelButtons.add(buttonPlay);
-		// panelButtons.add(buttonPause);
-
-		// constraints.gridwidth = 3;
-		// constraints.gridx = 0;
-		// constraints.gridy = 2;
-		// add(panelButtons, constraints);
-
-		// buttonOpen.addActionListener(this);
 		buttonPlay.addActionListener(this);
 		buttonPause.addActionListener(this);
 
@@ -143,9 +109,6 @@ public class MusicPlayer extends JPanel implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
-		// Runnable
-		// Thread timer = new Thread();
-
 		if (source instanceof JButton) {
 			JButton button = (JButton) source;
 			if (button == buttonPlay) {
@@ -191,7 +154,6 @@ public class MusicPlayer extends JPanel implements ActionListener {
 					sliderTime.setMaximum(player.getLength(length, source));
 					chrono.start();
 					appU.readAudioFeed(url);
-					// player.play();
 					if (sliderTime.getValue() == player.getLength(length,
 							source)) {
 						resetControls();
